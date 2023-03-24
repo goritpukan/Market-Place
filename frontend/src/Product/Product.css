@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap');
+
+* {
+  margin: 0;
+  font-family: 'Alegreya Sans', sans-serif;
+}
+a{
+  color: white;
+  text-decoration: none;
+}
+
+
+#CreateShopPage {
+  background-color: rgb(38, 38, 38);
+  position: absolute;
+  top: 13%;
+  width: 100%;
+  height: 87%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#ProductName {
+  position: absolute;
+  width: 90%;
+  top: 5%;
+}
+
+#ProductDescription {
+  color: white;
+  width: 90%;
+  top: 20%;
+  height: 30%;
+  margin-left: 10%;
+  font-size: 15px;
+  resize: none;
+  position: absolute;
+}
+
+#ProductDescription::placeholder {
+  height: 10%;
+  position: relative;
+  top: 40%;
+  color: gray;
+  font-size: 20px;
+  text-align: center;
+}
+
+.ShopInput {
+  margin-right: 10%;
+  display: block;
+  background-color: rgb(38, 38, 38);
+  height: auto;
+}
+
+.ShopInput::placeholder {
+  text-align: center;
+}
+
+.ShopInput::-webkit-file-upload-button {
+  transition: .3s;
+  border-width: 0px;
+  color: white;
+  background-color: rgb(23, 66, 207);
+  border-radius: 10px;
+}
+
+#CreateShopButton {
+  width: 500px;
+  height: 60px;
+  border-radius: 15px;
+  font-size: 25px;
+  flex: 4;
+}
+
+#image {
+  display: none;
+}
+
+#ChooseImage {
+  width: 150px;
+  height: 60px;
+  border-radius: 15px;
+  font-size: 20px;
+  position: absolute;
+  top: 70%;
+  left: 2%;
+}
+
+#PrewiwewImage {
+  width: 100px;
+  height: 100px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  border-width: 3px;
+  border-radius: 5px;
+  border-color: white;
+  background-color: gray;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#PrewiwewImageContainer {
+  list-style-type: none;
+  position: absolute;
+  left: 10%;
+  top: 70%;
+  min-width: 90%;
+  min-height: 100px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+#CostDiv {
+  margin-top: 160px;
+  position: absolute;
+  width: 90%;
+}
+
+#Currency {
+  position: absolute;
+  left: 90%;
+  top: -10%
+}
+
+#CreateShopButton {
+  position: absolute;
+  top: 90%;
+}
+
+#Selects {
+  position: absolute;
+  top: 85%;
+  left: 2%;
+}
+
+#DeleteImage {
+  position: absolute;
+  border-radius: 50%;
+}
+
+#ImageCounter {
+  color: white;
+}
+
+select {
+  margin-left: 5px;
+  color: white;
+  background-color: rgb(23, 66, 207);
+  border-width: 0;
+}
+
+select:hover {
+  background-color: rgb(16, 48, 152);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#ProductPage {
+  background-color: rgb(38, 38, 38);
+  position: absolute;
+  width: 100%;
+  height: 87%;
+  top: 13%;
+  color: white;
+}
+
+#ProductPrice {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: center;
+  gap: auto;
+  position: relative;
+  width: 30%;
+  height: 15%;
+  top: 15%;
+  left: 25%;
+}
+
+#ProductPrice h2 {
+  width: 100%;
+}
+
+#ScrollPhotoForward {
+  position: absolute;
+  left: 17%;
+}
+
+#ScrollPhotoBack {
+  position: absolute;
+  left: 2%;
+}
+
+.ScrollImage {
+  background-color: transparent;
+  top: 10%;
+  font-size: 40px;
+  z-index: 2;
+  width: 5%;
+  height: 40%;
+  cursor: pointer;
+}
+
+.ScrollImage:hover {
+  background-color: rgba(100, 100, 100, 0.298);
+}
+
+#ProductPageDescription {
+  border-color: white;
+  border-width: 1px;
+  border-style: solid;
+  width: 50%;
+  margin-top: 10px;
+  left: 2%;
+  overflow: scroll;
+  position: absolute;
+  top: 50%;
+  height: 40%;
+}
+
+#ProductImage {
+  width: 20%;
+  height: 40%;
+  position: absolute;
+  left: 2%;
+  top: 10%
+}
+#ProductImage img {
+  width: 100%;
+  height: 100%;
+}
