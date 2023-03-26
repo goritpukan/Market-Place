@@ -73,9 +73,31 @@ router.post("/UploadProductImage:id", upload.array("Images", 10), async (req, re
   }
 })
 
-router.get("/GetProductbyID:id", async (req, res) => {
+router.get("/GetProductbyOwnerID:id", async (req, res) => {
   try {
     const candidate = await Product.find({ ownerID: req.params.id });
+    if (candidate) {
+      res.send({
+        message: candidate,
+        isError: false,
+      });
+    }else{
+      res.send({
+        message: "Server Error",
+        isError: true,
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.send({
+      message: "Server Error",
+      isError: true,
+    });
+  }
+});
+router.get("GetProductbyId/:id", async (req, res) => {
+  try {
+    const candidate = await Product.find({ _id : req.params.id });
     if (candidate) {
       res.send({
         message: candidate,

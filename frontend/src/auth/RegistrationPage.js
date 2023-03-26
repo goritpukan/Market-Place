@@ -1,10 +1,13 @@
 import React from "react";
+import "./auth.css";
 import ErrorWindow from "../ErrorWindow.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   document.getElementsByTagName("title")[0].innerHTML = "Registration";
 
@@ -69,6 +72,7 @@ export default function RegistrationPage(props) {
           setErrorMessage(result.message);
         } else {
           props.sendUser(result.message);
+          navigate("/");
         }
       });
   }
@@ -120,7 +124,7 @@ export default function RegistrationPage(props) {
           </div>
           <button id="SendButton" onClick={() => GetData()}>Create Account</button>
           <p id="GotoLogin">Have an account?
-            <button id="Login-Reg" onClick={() => props.renderLogin()}>Log in</button>
+            <button id="Login-Reg" onClick={() => navigate("/Login")}>Log in</button>
           </p>
         </div>
       </div>

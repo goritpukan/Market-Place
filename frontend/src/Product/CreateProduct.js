@@ -5,12 +5,15 @@ import ImageList from "./ImageList";
 import ErrorWindow from "../ErrorWindow";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateProduct(props) {
 
+  const navigate = useNavigate();
+
   const [Photos, SetPhotos] = useState([]);
   const [Error, setError] = useState();
-  document.getElementsByTagName("title")[0].innerHTML = "Create Shop";
+  document.getElementsByTagName("title")[0].innerHTML = "Create Product";
 
   const GetImage = () => {
     const image = document.getElementById("image").files[0];
@@ -37,8 +40,8 @@ export default function CreateProduct(props) {
       city: document.getElementById("City").value,
       category: document.getElementById("Category").value,
       currency: document.getElementById("Currency").value,
-      owner: JSON.parse(localStorage.getItem("NowUser")),
-      ownerID: JSON.parse(localStorage.getItem("NowUser"))["_id"]
+      owner: props.User,
+      ownerID: props.User["_id"]
     };
     validate(data);
   }
@@ -64,7 +67,7 @@ export default function CreateProduct(props) {
           if (Photos) {
             SendPhoto(result.id);
           }else{
-            props.setPage("Profile");
+            navigate("/Profile");
           }
         } else {
           setError(result);
@@ -83,7 +86,7 @@ export default function CreateProduct(props) {
       .then(res => res.json())
       .then(result => {
         if (!result.ifError) {
-          props.setPage("Profile");
+          navigate("/Profile");
         } else {
           setError(result)
         }

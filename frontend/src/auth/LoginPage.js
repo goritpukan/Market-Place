@@ -1,10 +1,13 @@
 import React from "react";
+import "./auth.css";
 import ErrorWindow from "../ErrorWindow.js";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const User = JSON.parse(localStorage.getItem("NowUser"));
@@ -27,18 +30,11 @@ export default function LoginPage(props) {
         .then(result => {
           if (!result.isError) {
             props.sendUser(result.message);
+            navigate("/");
           }
         })
     }
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        GetData();
-      }
-    });
-    return () => {
-      document.removeEventListener("keydown", () => {});
-    }
-  });
+  }, []);
 
   const GetData = () => {
     const RegData = {
@@ -85,6 +81,7 @@ export default function LoginPage(props) {
           setErrorMessage(result.message);
         } else {
           props.sendUser(result.message);
+          navigate("/");
         }
       });
   }
@@ -117,7 +114,7 @@ export default function LoginPage(props) {
               maxLength="30" />
           </div>
           <button id="SendButton" onClick={() => GetData()}>Log in</button>
-          <p id="GotoLogin">Don't have an account? <button id="Login-Reg" onClick={() => props.renderLogin()}>Create account</button></p>
+          <p id="GotoLogin">Don't have an account? <button id="Login-Reg" onClick={() => navigate("/Registration")}>Create account</button></p>
         </div>
       </div>
     </div>

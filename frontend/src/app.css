@@ -1,17 +1,71 @@
-*{
+* {
   overflow: hidden;
 }
-header{
-  position: absolute;
+
+header {
+  position: fixed;
   width: 100%;
   height: 13%;
   background-color: rgb(51, 51, 51);
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: center;
   z-index: 3;
+  overflow: visible;
 }
-#MainButton{
+
+header button {
+  width: 100px;
+  height: 50px;
+  border-radius: 10px;
+}
+
+header img {
+  position: absolute;
+  right: 3.5%;
+  border-radius: 15px;
+  width: 70px;
+  height: 70px;
+}
+
+#MainButton {
   position: absolute;
   left: 0.5%;
+}
+
+#LogIn {
+  position: absolute;
+  right: 1%;
+}
+
+#Dropdown {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  z-index: 4;
+  right: 1%;
+  top: 90%;
+  width: 10%;
+  height: auto;
+  background-color: rgb(33, 33, 33);
+  border-radius: 10px;
+  animation: growDown 150ms ease-in-out forwards;
+  transform-origin: top center;
+}
+
+#Dropdown button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+@keyframes growDown {
+  0% {
+    transform: scaleY(0)
+  }
+
+  100% {
+    transform: scaleY(1)
+  }
 }

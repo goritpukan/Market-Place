@@ -1,15 +1,34 @@
 import React from "react";
 import { FastAverageColor } from 'fast-average-color';
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function ProductPage(props) {
   const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
 
-  const Product = props.PageData;
-  const PhotoArrayLength = JSON.parse(Product.photos).length - 1;
+  const navigate = useNavigate();
+  const { id } = useParams();
 
+  const [Product, setProduct] = useState(null);
+  const [PhotoArrayLength, setPhotoArrayLength] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [PhotoIndex, setPhotoIndex] = useState(0);
   const [ScrollColor, setScrollColor] = useState();
+
+  useEffect(() => {
+    fetch("http://localhost:4001/api/products/GetProductbyID/" + id)
+      .then(res => res.json)
+      .then(result => {
+        if (result.isError) {
+          navigate("*");
+          return;
+        }
+        setProduct(JSON.parse(result.message));
+        setPhotoArrayLength(JSON.parse(Product.photos).length - 1);
+        setIsLoaded(true);
+      })
+  }, [setProduct, setPhotoArrayLength, setIsLoaded])
+
 
   const CheckColor = async () => {
     let fac = new FastAverageColor();
@@ -53,6 +72,11 @@ export default function ProductPage(props) {
       setPhotoIndex(PhotoIndex - 1);
     }
   }
+  if (!isLoaded) {
+    return (
+      <h1>Loadind...</h1>
+    );
+  }
 
   return (
     <div id="ProductPage">
@@ -64,7 +88,7 @@ export default function ProductPage(props) {
         </button>
       </div>
       <div id="ProductPageDescription">
-        <h3>{"|Місто : " + Product.city + " Категорія: " + Product.category +" |" + Product.description}</h3>
+        <h3>{"|Місто : " + Product.city + " Категорія: " + Product.category + " |" + Product.description}</h3>
       </div>
       <div>{ScrollButtons()}</div>
       <div id="ProductImage">  <img alt="" src={PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]} /></div>
