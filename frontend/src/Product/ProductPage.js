@@ -8,41 +8,44 @@ export default function ProductPage(props) {
 
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const [Product, setProduct] = useState(null);
   const [PhotoArrayLength, setPhotoArrayLength] = useState(null);
+  const [Product, setProduct] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [PhotoIndex, setPhotoIndex] = useState(0);
   const [ScrollColor, setScrollColor] = useState();
 
-  useEffect(() => {
-    fetch("http://localhost:4001/api/products/GetProductbyID/" + id)
-      .then(res => res.json)
-      .then(result => {
-        if (result.isError) {
-          navigate("*");
-          return;
-        }
-        setProduct(JSON.parse(result.message));
-        setPhotoArrayLength(JSON.parse(Product.photos).length - 1);
-        setIsLoaded(true);
-      })
-  }, [setProduct, setPhotoArrayLength, setIsLoaded])
-
-
   const CheckColor = async () => {
-    let fac = new FastAverageColor();
-    const color = await fac.getColorAsync(PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]);
-    if (color.isDark) {
-      setScrollColor("white");
-    } else {
-      setScrollColor("black");
+    if (isLoaded) {
+      let fac = new FastAverageColor();
+      const color = await fac.getColorAsync(PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]);
+      if (color.isDark) {
+        setScrollColor("white");
+      } else {
+        setScrollColor("black");
+      }
     }
   }
 
+  const getData = async () => {
+    const res = await fetch("http://localhost:4001/api/products/GetProductbyID/" + id);
+    const reuslt = await res.json();
+    setProduct(reuslt.message);
+    setIsLoaded(true);
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if(isLoaded){
+      setPhotoArrayLength(JSON.parse(Product.photos).length - 1);
+    }
+  },[isLoaded])
+
   useEffect(() => {
     CheckColor();
-  });
+  }, [PhotoIndex]);
 
   const ScrollButtons = () => {
     if (PhotoArrayLength > 1) {
@@ -72,6 +75,7 @@ export default function ProductPage(props) {
       setPhotoIndex(PhotoIndex - 1);
     }
   }
+
   if (!isLoaded) {
     return (
       <h1>Loadind...</h1>
@@ -94,4 +98,5 @@ export default function ProductPage(props) {
       <div id="ProductImage">  <img alt="" src={PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]} /></div>
     </div>
   );
+
 }

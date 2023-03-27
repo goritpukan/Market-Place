@@ -95,9 +95,9 @@ router.get("/GetProductbyOwnerID:id", async (req, res) => {
     });
   }
 });
-router.get("GetProductbyId/:id", async (req, res) => {
+router.get("/GetProductbyId/:id", async (req, res) => {
   try {
-    const candidate = await Product.find({ _id : req.params.id });
+    const candidate = await Product.findById(req.params.id);
     if (candidate) {
       res.send({
         message: candidate,
