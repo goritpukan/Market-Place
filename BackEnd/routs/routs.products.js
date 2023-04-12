@@ -73,6 +73,54 @@ router.post("/UploadProductImage:id", upload.array("Images", 10), async (req, re
   }
 })
 
+router.post("/GetProducts", async (req, res) => {
+  try {
+    const { city, currency, category, minPrice, maxPrice, page } = req.body;
+    const Query = {
+      city: city,
+      currency: currency,
+      category: category,
+      cost: { $gt: minPrice, $lt: maxPrice }
+    };   
+
+    if (!minPrice) {
+      delete Query.cost["$gt"];
+    }
+    if (!maxPrice) {
+      delete Query.cost["$lt"];
+    }
+    for (let i in Query) {
+      if (!Query[i]) {
+        delete Query[i];
+      }
+    }
+    if (Object.keys(Query.cost).length === 0) {
+      delete Query.cost;
+    }
+    const ProductsLength = (await Product.find(Query)).length;
+    const Products = await Product.find(Query).skip(page * 10).limit(10);
+    if (Products.length >= 1) {
+      res.send({
+        message: Products,
+        length: ProductsLength,
+        isError: false
+      });
+    }else{
+      res.send({
+        message: "Nothing Found",
+        isError: true
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    res.statusCode(400);
+    res.send({
+      message: "Server Error",
+      isError: true,
+    });
+  }
+})
+
 router.get("/GetProductbyOwnerID:id", async (req, res) => {
   try {
     const candidate = await Product.find({ ownerID: req.params.id });
@@ -81,7 +129,7 @@ router.get("/GetProductbyOwnerID:id", async (req, res) => {
         message: candidate,
         isError: false,
       });
-    }else{
+    } else {
       res.send({
         message: "Server Error",
         isError: true,
@@ -103,7 +151,7 @@ router.get("/GetProductbyId/:id", async (req, res) => {
         message: candidate,
         isError: false,
       });
-    }else{
+    } else {
       res.send({
         message: "Server Error",
         isError: true,

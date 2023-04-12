@@ -1,12 +1,12 @@
 import React from "react";
+import "./Product.css";
 import { FastAverageColor } from 'fast-average-color';
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function ProductPage(props) {
   const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
 
-  const navigate = useNavigate();
   const { id } = useParams();
   const [PhotoArrayLength, setPhotoArrayLength] = useState(null);
   const [Product, setProduct] = useState(null);
@@ -35,16 +35,19 @@ export default function ProductPage(props) {
 
   useEffect(() => {
     getData();
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     if(isLoaded){
       setPhotoArrayLength(JSON.parse(Product.photos).length - 1);
     }
+    // eslint-disable-next-line
   },[isLoaded])
 
   useEffect(() => {
     CheckColor();
+    // eslint-disable-next-line
   }, [PhotoIndex]);
 
   const ScrollButtons = () => {

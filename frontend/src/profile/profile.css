@@ -216,7 +216,8 @@ input::placeholder {
   overflow: auto;
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: flex-start!important;
+  align-items: center;
   gap: 5px;
   list-style-type: none;
 

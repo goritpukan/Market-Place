@@ -24,16 +24,19 @@ export default function Header(props) {
         <div id="Dropdown">
           <button onClick={() => {
             navigate("/Profile")
-            setDropdownOpen(!DropdownOpen)}}>Open Profile</button>
+            setDropdownOpen(!DropdownOpen)
+          }}>Open Profile</button>
+          <button onClick={() => {
+            navigate("/CreateProduct");
+            setDropdownOpen(!DropdownOpen)
+          }}>Create Product</button>
           <button onClick={() => {
             if (window.location.pathname === "/Profile" || window.location.pathname === "/CreateProduct")
               navigate("/");
             props.logOut();
-            setDropdownOpen(!DropdownOpen)}}>Log Out</button>
-          <button onClick={() => {
-            navigate("/CreateProduct");
-            setDropdownOpen(!DropdownOpen)}}>Create Product</button>
-          <button onClick={() => setDropdownOpen(!DropdownOpen)}>Close</button>
+            setDropdownOpen(!DropdownOpen)
+          }}>Log Out</button>
+          <button onClick={() => setDropdownOpen(!DropdownOpen)}>^</button>
         </div>
       )
     }
@@ -41,7 +44,7 @@ export default function Header(props) {
   if (window.location.pathname !== "/Login" && window.location.pathname !== "/Registration") {
     return (
       <header>
-        <button onClick={() => navigate("/")}>Main</button>
+        <button className="MainButton" onClick={() => navigate("/")}>Main</button>
         <Avatar />
         <Dropdown />
       </header>
