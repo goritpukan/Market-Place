@@ -3,16 +3,10 @@ import { useState } from "react";
 import ErrorWindow from "../ErrorWindow";
 
 export default function ChangeEmail(props) {
-  const [Error, setError] = useState();
+  const [error, setError] = useState();
   if (props.isActive) {
 
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        ChangeEmail();
-      }
-    });
-
-    const ChangeEmail = () => {
+    const changeEmail = () => {
       const data = {
         password: document.getElementById("ChangeEmailPasswordInput").value,
         email: props.email,
@@ -40,14 +34,14 @@ export default function ChangeEmail(props) {
         setError("Не всі поля заповнені");
       }
     }
-    const CloseErrorWindow = () => {
+    const closeErrorWindow = () => {
       setError(null);
     }
     return (
       <div id="ChangeEmailWindow" className="ChangeSmth">
         <ErrorWindow
-          errorMessage={Error}
-          closeWindow={CloseErrorWindow} />
+          errorMessage={error}
+          closeWindow={closeErrorWindow} />
         <button className="Exit" onClick={props.CloseWindow}>Exit</button>
         <input
           type="email"
@@ -64,7 +58,7 @@ export default function ChangeEmail(props) {
           minLength="5"
           maxLength="30"
           placeholder="Type your password" />
-        <button className="ChangeButton" id="ChangeEmailButton" onClick={() => ChangeEmail()}>Change Email</button>
+        <button className="ChangeButton" id="ChangeEmailButton" onClick={() => changeEmail()}>Change Email</button>
       </div>
     );
   }

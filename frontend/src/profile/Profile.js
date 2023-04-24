@@ -8,19 +8,17 @@ import ChangeEmail from "./ChangeEmail";
 import MyProducts from "./MyProducts";
 
 export default function Profile(props) {
-  const [User, SetUser] = useState(props.User);
-  const [PhotoActiveState, SetPhotoActiveState] = useState(false);
-  const [NameActiveState, SetNameActiveState] = useState(false);
-  const [EmailActiveState, SetEmailActiveState] = useState(false);
+  const [user, setUser] = useState(props.User);
+  const [photoActiveState, setPhotoActiveState] = useState(false);
+  const [nameActiveState, setNameActiveState] = useState(false);
+  const [emailActiveState, setEmailActiveState] = useState(false);
 
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
 
-  document.getElementsByTagName("title")[0].innerHTML = "Profile";
-
-  const UpdateUserInfo = () => {
+  const updateUserInfo = () => {
     const data = {
-      email: User.email,
-      password: User.password
+      email: user.email,
+      password: user.password
     };
     fetch("http://localhost:4001/api/auth/login", {
       method: "POST",
@@ -33,82 +31,88 @@ export default function Profile(props) {
       .then((res) => res.json())
       .then(result => {
         if (!result.isError) {
-          SetUser(result.message)
+          setUser(result.message)
         } else {
           console.log(result.message)
         }
       });
-    props.UpdateUser(User);
+    props.UpdateUser(user);
 
   }
-  // eslint-disable-next-line
-  useEffect(() => {UpdateUserInfo()}, []);
+  useEffect(() => {
+    if (user) {
+      updateUserInfo();
+    }
 
-  const ChangePhotoActive = () => {
-    SetPhotoActiveState(!PhotoActiveState);
-    if (PhotoActiveState) {
-      UpdateUserInfo();
+    // eslint-disable-next-line
+  }, []);
+
+  const changePhotoActive = () => {
+    setPhotoActiveState(!photoActiveState);
+    if (photoActiveState) {
+      updateUserInfo();
     }
   }
 
-  const ChangeNameActive = () => {
-    SetNameActiveState(!NameActiveState);
-    if (NameActiveState) {
-      UpdateUserInfo();
+  const changeNameActive = () => {
+    setNameActiveState(!nameActiveState);
+    if (nameActiveState) {
+      updateUserInfo();
     }
   }
 
-  const ChangeEmailActive = () => {
-    SetEmailActiveState(!EmailActiveState);
-    if (EmailActiveState) {
-      UpdateUserInfo();
+  const changeEmailActive = () => {
+    setEmailActiveState(!emailActiveState);
+    if (emailActiveState) {
+      updateUserInfo();
     }
   }
 
-  const UpdateUserEmail = (newEmail) => {
-    const user = User;
-    user.email = newEmail;
-    SetUser(user);
-    props.UpdateUser(User);
+  const updateUserEmail = (newEmail) => {
+    const _user = user;
+    _user.email = newEmail;
+    setUser(_user);
+    props.UpdateUser(_user);
   }
-
-  return (
-    <div id="Profile">
-      <MyProducts 
-      id={User["_id"]}
-      setPage={props.setPage}/>
-      <ChangePhoto
-        nickname={User.nickname}
-        isActive={PhotoActiveState}
-        CloseWindow={ChangePhotoActive} />
-      <ChangeName
-        nickname={User.nickname}
-        isActive={NameActiveState}
-        CloseWindow={ChangeNameActive} />
-      <ChangeEmail
-        nickname={User.nickname}
-        email={User.email}
-        isActive={EmailActiveState}
-        UpdateUserEmail={UpdateUserEmail}
-        CloseWindow={ChangeEmailActive} />
-      <div id="Main">
-        <div id="ProfileInfo">
-          <img id="Avatar" alt="" src={AVATARURL + User.avatar} />
-          <button id="ChangePhoto" onClick={() => ChangePhotoActive()}>Change Photo</button>
-          <div id="InfoList">
-            <ul>
-              <li
-                className="Info"
-                id="ProfileName"
-                onClick={() => { ChangeNameActive() }}>Name: {User.nickname}</li>
-              <li
-                className="Info"
-                id="ProfileEmail"
-                onClick={() => ChangeEmailActive()}>Email: {User.email}</li>
-            </ul>
+  if (user) {
+    return (
+      <div id="Profile">
+        <MyProducts
+          id={user["_id"]}
+          setPage={props.setPage} />
+        <ChangePhoto
+          nickname={user.nickname}
+          isActive={photoActiveState}
+          CloseWindow={changePhotoActive} />
+        <ChangeName
+          nickname={user.nickname}
+          isActive={nameActiveState}
+          CloseWindow={changeNameActive} />
+        <ChangeEmail
+          nickname={user.nickname}
+          email={user.email}
+          isActive={emailActiveState}
+          UpdateUserEmail={updateUserEmail}
+          CloseWindow={changeEmailActive} />
+        <div id="Main">
+          <div id="ProfileInfo">
+            <img id="Avatar" alt="" src={AVATARURL + user.avatar} />
+            <button id="ChangePhoto" onClick={() => changePhotoActive()}>Change Photo</button>
+            <div id="InfoList">
+              <ul>
+                <li
+                  className="Info"
+                  id="ProfileName"
+                  onClick={() => { changeNameActive() }}>Name: {user.nickname}</li>
+                <li
+                  className="Info"
+                  id="ProfileEmail"
+                  onClick={() => changeEmailActive()}>Email: {user.email}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }

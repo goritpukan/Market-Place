@@ -3,15 +3,10 @@ import { useState } from "react";
 import ErrorWindow from "../ErrorWindow";
 
 export default function ChangeName(props) {
-  const [Error, setError] = useState();
+  const [error, setError] = useState();
 
   if (props.isActive) {
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        ChangeName();
-      }
-    });
+    
     const ChangeName = () => {
       const data = {
         nickname: props.nickname,
@@ -46,7 +41,7 @@ export default function ChangeName(props) {
     return (
       <div id="ChangeNameWindow" className="ChangeSmth">
         <ErrorWindow
-          errorMessage={Error}
+          errorMessage={error}
           closeWindow={CloseErrorWindow} />
         <button className="Exit" onClick={props.CloseWindow}>Exit</button>
         <input

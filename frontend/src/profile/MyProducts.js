@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 export default function MyProducts(props) {
   const navigate = useNavigate();
-  const [IsLoaded, setLoad] = useState(false);
-  const [Products, setProducts] = useState();
+  const [isLoaded, setIsLoadede] = useState(false);
+  const [products, setProducts] = useState(null);
 
   const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
   useEffect(() => {
@@ -16,18 +16,18 @@ export default function MyProducts(props) {
       .then(result => {
         if (!result.isError) {
           setProducts(result.message);
-          setLoad(true);
+          setIsLoadede(true);
         } else {
-          console.log(result.message)
+          console.log(result.message);
         }
       });
       // eslint-disable-next-line
   }, []);
 
-  if (IsLoaded) {
+  if (isLoaded) {
     return (
       <ul id="MyProducts">
-        {Products.map((Product) => (
+        {products.map((Product) => (
           <li id="MyProduct" key={Product["_id"]} onClick={() => navigate("/Product/" + Product["_id"])}>
             <h1>{Product.name}</h1>
             <h2 id="ProductProfilePrice">{Product.cost} {Product.currency}</h2>

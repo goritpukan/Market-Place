@@ -4,16 +4,16 @@ import { useNavigate } from "react-router-dom";
 import "./MainPage.css";
 
 export default function MainPage(props) {
-  document.getElementsByTagName("title")[0].innerHTML = "Main Page";
   const navigate = useNavigate();
 
-  const [Filters, setFilters] = useState({});
-  const [Products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({});
+  const [products, setProducts] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [Page, setPage] = useState(0);
-  const [ProductsLength, setProductsLength] = useState(0);
+  const [page, setPage] = useState(0);
+  const [productsLength, setProductsLength] = useState(0);
 
   const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
+  const AVATARURL = "http://localhost:4001/api/images/avatar/";
   const MAXPRODUCTS = 10;
 
   const getProducts = () => {
@@ -24,7 +24,7 @@ export default function MainPage(props) {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(Filters)
+      body: JSON.stringify(filters)
     })
       .then(res => res.json())
       .then(result => {
@@ -40,35 +40,36 @@ export default function MainPage(props) {
       })
   }
   useEffect(() => {
-    UpdateFilters();
+    updateFilters();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setFilters({
-      ...Filters,
-      page: Page
+      ...filters,
+      page: page
     });
 
     // eslint-disable-next-line
-  }, [Page]);
+  }, [page]);
 
   useEffect(() => {
-    if (Filters) {
+    if (filters) {
       getProducts();
     }
     // eslint-disable-next-line
-  }, [Filters]);
+  }, [filters]);
 
 
-  const UpdateFilters = () => {
+  const updateFilters = () => {
     const filters = {
       city: document.getElementById("City").value || null,
       currency: document.getElementById("CurrencyFilter").value || null,
       category: document.getElementById("Category").value || null,
       minPrice: document.getElementById("MinPrice").value || null,
       maxPrice: document.getElementById("MaxPrice").value || null,
-      page: Page
+      name: document.querySelector("#Search input").value || null,
+      page: page
     };
     setFilters(filters);
 
@@ -84,9 +85,10 @@ export default function MainPage(props) {
       i.value = "";
     }
 
-    UpdateFilters();
+    updateFilters();
   }
-  const CheckMinMax = () => {
+
+  const checkMinMax = () => {
     const minInput = document.getElementById("MinPrice");
     const maxInput = document.getElementById("MaxPrice");
     if (+minInput.value > +maxInput.value && maxInput.value) {
@@ -101,11 +103,16 @@ export default function MainPage(props) {
       )
     }
   }
+
   const Pages = () => {
-    const buttonsCount = Math.ceil(ProductsLength / MAXPRODUCTS);
+    const buttonsCount = Math.ceil(productsLength / MAXPRODUCTS);
     let buttonsArr = [];
 
     for (let i = 0; i < buttonsCount; i++) {
+      if (i > 8) {
+        buttonsArr[i] = buttonsCount - 1;
+        break;
+      }
       buttonsArr[i] = i;
     }
 
@@ -118,18 +125,24 @@ export default function MainPage(props) {
     );
 
   }
+
   const ProductList = () => {
-    if (isLoaded && Products) {
+    if (isLoaded && products) {
       return (
         <>
           <ul id="Products">
-            {Products.map(Product => (
+            {products.map(Product => (
               <li key={Product["_id"]} onClick={() => navigate("/Product/" + Product["_id"])}>
                 <img id="MyProductPhoto" alt="" src={PHTOTURL + JSON.parse(Product.photos)[0]} />
                 <h1>{Product.name}</h1>
                 <h1>{Product.cost} {Product.currency}</h1>
-                <h2>{Product.city}</h2>
-                <h2>{Product.category}</h2>
+                <h1>{Product.city}</h1>
+                <h1>{Product.category}</h1>
+                <div className="OwnerInfo">
+                  <h1>{JSON.parse(Product.owner).email}</h1>
+                  <h1>{JSON.parse(Product.owner).nickname}</h1>
+                  <img src={AVATARURL + JSON.parse(Product.owner).avatar}></img>
+                </div>
               </li>
             ))}
             <Pages />
@@ -141,15 +154,15 @@ export default function MainPage(props) {
 
   return (
     <div id="MainPage">
-      {Loading()}
+      <Loading />
       <div id="FilterDiv">
-        <select id="CurrencyFilter" onChange={() => UpdateFilters()}>
+        <select id="CurrencyFilter" onChange={() => updateFilters()}>
           <option value="">Валюта</option>
           <option value="UAH">UAH</option>
           <option value="$">$</option>
           <option value="€">€</option>
         </select>
-        <select id="Category" onChange={() => UpdateFilters()}>
+        <select id="Category" onChange={() => updateFilters()}>
           <option value="">Категорія</option>
           <option value="Нерухомість">Нерухомість</option>
           <option value="Авто">Авто</option>
@@ -160,7 +173,7 @@ export default function MainPage(props) {
           <option value="Велосипеди">Велосипеди</option>
           <option value="Інше">Інше</option>
         </select>
-        <select id="City" onChange={() => UpdateFilters()}>
+        <select id="City" onChange={() => updateFilters()}>
           <option value="">Місто</option>
           <option value="Київ">Київ</option>
           <option value="Одеса">Одеса</option>
@@ -170,19 +183,22 @@ export default function MainPage(props) {
         </select>
         <input id="MinPrice" placeholder="Min"
           onBlur={() => {
-            CheckMinMax();
-            UpdateFilters();
+            checkMinMax();
+            updateFilters();
           }}
           maxLength="10" type="number" />
         <input id="MaxPrice" placeholder="Max"
           onBlur={() => {
-            CheckMinMax();
-            UpdateFilters();
+            checkMinMax();
+            updateFilters();
           }}
           maxLength="10" type="number" />
+        <div id="Search">
+          <input type="text" onBlur={() => updateFilters()} />
+        </div>
         <button onClick={() => clearAll()}>Clear</button>
       </div>
-      {ProductList()}
+      <ProductList />
     </div>
   )
 

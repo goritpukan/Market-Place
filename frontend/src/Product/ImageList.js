@@ -1,19 +1,19 @@
 import React from "react";
 
 export default function ImageList(props) {
-  const ImagesList = props.ImageList.map(image => (
-    <li key={props.ImageList.indexOf(image)}>
+  const imagesList = props.imageList.map(image => (
+    <li key={props.imageList.indexOf(image)}>
       <button
-        onClick={() => props.DeleteImage(props.ImageList.indexOf(image))}
+        onClick={() => props.deleteImage(props.imageList.indexOf(image))}
         id="DeleteImage">X</button>
       <img alt="" src={image.PhotoUrl} id="PrewiwewImage"></img>
     </li>
   ));
-  if (props.ImageList) {
+  if (props.imageList) {
     return (
       <ul id="PrewiwewImageContainer">
-        {ImagesList}
-        <div id="ImageCounter">{props.ImageList.length} / 10</div>
+        {imagesList}
+        <div id="ImageCounter">{props.imageList.length} / 10</div>
       </ul>
     );
   }

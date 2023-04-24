@@ -10,55 +10,58 @@ export default function LoginPage(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const User = JSON.parse(localStorage.getItem("NowUser"));
-    document.getElementsByTagName("title")[0].innerHTML = "Login";
 
-    if (User) {
-      const data = {
-        email: User.email,
-        password: User.password
-      };
-      fetch("http://localhost:4001/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: (JSON.stringify(data))
-      })
-        .then(res => res.json())
-        .then(result => {
-          if (!result.isError) {
-            props.sendUser(result.message);
-            navigate("/");
-          }
+    if (localStorage.getItem("NowUser") !== "undefined") {
+      const User = JSON.parse(localStorage.getItem("NowUser"));
+
+      if (User) {
+        const data = {
+          email: User.email,
+          password: User.password
+        };
+        fetch("http://localhost:4001/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: (JSON.stringify(data))
         })
+          .then(res => res.json())
+          .then(result => {
+            if (!result.isError) {
+              props.sendUser(result.message);
+              navigate("/");
+            }
+          })
+      }
     }
+    // eslint-disable-next-line
   }, []);
 
-  const GetData = () => {
-    const RegData = {
+  const getData = () => {
+    const regData = {
       email: document.getElementById("emailInput").value,
       password: document.getElementById("passwordInput").value,
     };
-    validate(RegData);
+    validate(regData);
   }
 
-  const validate = (RegData) => {
+  const validate = (regData) => {
     if (
-      RegData.email === "" ||
-      RegData.password === ""
+      regData.email === "" ||
+      regData.password === ""
     ) {
       setErrorMessage("Не все поля заполнены");
 
-    } else if (RegData.email.includes("@") === false
-      || RegData.email.split("@")[1].includes(".") === false) {
+    } else if (regData.email.includes("@") === false
+      || regData.email.split("@")[1].includes(".") === false) {
       setErrorMessage("Почта введена неправильно");
     }
-    else if (RegData.password.length < 5) {
+    else if (regData.password.length < 5) {
       setErrorMessage("Пароль спишком короткий");
     } else {
-      sendData(RegData);
+      sendData(regData);
     }
   }
 
@@ -113,7 +116,7 @@ export default function LoginPage(props) {
               minLength="5"
               maxLength="30" />
           </div>
-          <button id="SendButton" onClick={() => GetData()}>Log in</button>
+          <button id="SendButton" onClick={() => getData()}>Log in</button>
           <p id="GotoLogin">Don't have an account? <button id="Login-Reg" onClick={() => navigate("/Registration")}>Create account</button></p>
         </div>
       </div>

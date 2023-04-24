@@ -11,28 +11,27 @@ export default function CreateProduct(props) {
 
   const navigate = useNavigate();
 
-  const [Photos, SetPhotos] = useState([]);
-  const [Error, setError] = useState();
-  document.getElementsByTagName("title")[0].innerHTML = "Create Product";
+  const [photos, setPhotos] = useState([]);
+  const [error, setError] = useState();
 
-  const GetImage = () => {
+  const getImage = () => {
     const image = document.getElementById("image").files[0];
     if (image) {
       const fr = new FileReader();
       fr.addEventListener("load", () => {
-        SetPhotos([
-          ...Photos, { Photo: image, PhotoUrl: fr.result }
+        setPhotos([
+          ...photos, { Photo: image, PhotoUrl: fr.result }
         ]);
       }, false);
       fr.readAsDataURL(image);
     }
   }
-  const DeleteImage = (index) => {
-    const arr = [...Photos];
+  const deleteImage = (index) => {
+    const arr = [...photos];
     arr.splice(index, 1);
-    SetPhotos(arr);
+    setPhotos(arr);
   }
-  const GetData = () => {
+  const getData = () => {
     const data = {
       name: document.getElementById("ProductName").value,
       description: document.getElementById("ProductDescription").value,
@@ -40,19 +39,24 @@ export default function CreateProduct(props) {
       city: document.getElementById("City").value,
       category: document.getElementById("Category").value,
       currency: document.getElementById("Currency").value,
-      owner: props.User,
+      owner: {
+        email: props.User.email,
+        nickname: props.User.nickname,
+        avatar: props.User.avatar
+      },
+
       ownerID: props.User["_id"]
     };
     validate(data);
   }
   const validate = (data) => {
     if (data.name.length >= 5 && data.cost && data.cost <= 1000000000 && data.cost > 0) {
-      SendData(data);
+      sendData(data);
     } else {
       setError("Щось не заповнено");
     }
   }
-  const SendData = (data) => {
+  const sendData = (data) => {
     fetch("http://localhost:4001/api/products/CreateProduct", {
       method: "POST",
       headers: {
@@ -64,8 +68,8 @@ export default function CreateProduct(props) {
       .then(res => res.json())
       .then(result => {
         if (!result.isError) {
-          if (Photos) {
-            SendPhoto(result.id);
+          if (photos) {
+            sendPhoto(result.id);
           }else{
             navigate("/Profile");
           }
@@ -74,10 +78,10 @@ export default function CreateProduct(props) {
         }
       })
   }
-  const SendPhoto = (id) => {
+  const sendPhoto = (id) => {
     const fd = new FormData();
-    for (let i in Photos) {
-      fd.append("Images", Photos[i].Photo)
+    for (let i in photos) {
+      fd.append("Images", photos[i].Photo)
     }
     fetch("http://localhost:4001/api/products/UploadProductImage" + id, {
       method: "POST",
@@ -93,20 +97,20 @@ export default function CreateProduct(props) {
       })
   }
 
-  const CloseErrorWindow = () => {
+  const closeErrorWindow = () => {
     setError(null);
   }
 
   return (
     <div id="CreateShopPage">
       <ErrorWindow
-      errorMessage={Error} 
-      closeWindow={CloseErrorWindow}/>
+      errorMessage={error} 
+      closeWindow={closeErrorWindow}/>
       <input
         type="file"
         id="image"
         accept="image/png, image/jpg"
-        onChange={() => GetImage()} />
+        onChange={() => getImage()} />
       <input type="Text"
         className="ShopInput"
         id="ProductName"
@@ -120,8 +124,8 @@ export default function CreateProduct(props) {
         minLength="1"
         maxLength="2000" />
       <ImageList
-        ImageList={Photos}
-        DeleteImage={DeleteImage} />
+        imageList={photos}
+        deleteImage={deleteImage} />
       <div id="CostDiv">
         <input type="Number"
           className="ShopInput"
@@ -154,8 +158,8 @@ export default function CreateProduct(props) {
           <option value="Інше">Інше</option>
         </select>
       </div>
-      <button id="ChooseImage" onClick={() => { if (Photos.length < 10) { document.getElementById("image").click() } }}>Add Image</button>
-      <button id="CreateShopButton" onClick={() => GetData()}>Create</button>
+      <button id="ChooseImage" onClick={() => { if (photos.length < 10) { document.getElementById("image").click() } }}>Add Image</button>
+      <button id="CreateShopButton" onClick={() => getData()}>Create</button>
     </div>
   )
 }

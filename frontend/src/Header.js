@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Header(props) {
-  const [DropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
@@ -11,7 +11,7 @@ export default function Header(props) {
   const Avatar = () => {
     if (props.User) {
       return (
-        <img alt="" onClick={() => setDropdownOpen(!DropdownOpen)} src={AVATARURL + props.User.avatar}></img>
+        <img alt="" onClick={() => setDropdownOpen(!dropdownOpen)} src={AVATARURL + props.User.avatar}></img>
       );
     }
     return (
@@ -19,24 +19,24 @@ export default function Header(props) {
     )
   }
   const Dropdown = () => {
-    if (DropdownOpen) {
+    if (dropdownOpen) {
       return (
         <div id="Dropdown">
           <button onClick={() => {
             navigate("/Profile")
-            setDropdownOpen(!DropdownOpen)
+            setDropdownOpen(!dropdownOpen)
           }}>Open Profile</button>
           <button onClick={() => {
             navigate("/CreateProduct");
-            setDropdownOpen(!DropdownOpen)
+            setDropdownOpen(!dropdownOpen)
           }}>Create Product</button>
           <button onClick={() => {
             if (window.location.pathname === "/Profile" || window.location.pathname === "/CreateProduct")
               navigate("/");
             props.logOut();
-            setDropdownOpen(!DropdownOpen)
+            setDropdownOpen(!dropdownOpen)
           }}>Log Out</button>
-          <button onClick={() => setDropdownOpen(!DropdownOpen)}>^</button>
+          <button onClick={() => setDropdownOpen(!dropdownOpen)}>^</button>
         </div>
       )
     }

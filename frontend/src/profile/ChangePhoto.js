@@ -1,22 +1,11 @@
 import React from "react"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ErrorWindow from "../ErrorWindow";
 
 export default function ChangePhoto(props) {
-  const [Error, setError] = useState();
+  const [error, setError] = useState();
 
-  useEffect(() => {
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") {
-        SendImage();
-      }
-    });
-    return () => {
-      document.removeEventListener("keydown", () => {});
-    }
-  });
-
-  const SendImage = () => {
+  const sendImage = () => {
     const Image = document.getElementById("FileInput").files[0];
     if (Image) {
       const URI = "http://localhost:4001/api/images/changeAvatar" + props.nickname;
@@ -45,7 +34,7 @@ export default function ChangePhoto(props) {
     return (
       <div id="ChangePhotoWindow" className="ChangeSmth">
          <ErrorWindow
-          errorMessage={Error}
+          errorMessage={error}
           closeWindow={CloseErrorWindow} />
         <button className="Exit" onClick={() => props.CloseWindow()}>Exit</button>
         <input
@@ -53,7 +42,7 @@ export default function ChangePhoto(props) {
           name="Avatar"
           id="FileInput"
           accept="image/png, image/jpg"/>
-        <button id="SendFile" onClick={() => SendImage()}>SendFile</button>
+        <button id="SendFile" onClick={() => sendImage()}>SendFile</button>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const Product = require("../models/ProductModel.js");
+const User = require("../models/User.js");
 const router = Router();
 const multer = require("multer");
 
@@ -41,6 +42,8 @@ router.post("/CreateProduct", async (req, res) => {
   }
 })
 
+
+
 router.post("/UploadProductImage:id", upload.array("Images", 10), async (req, res) => {
   try {
     const filenames = [];
@@ -73,21 +76,27 @@ router.post("/UploadProductImage:id", upload.array("Images", 10), async (req, re
   }
 })
 
+
+
 router.post("/GetProducts", async (req, res) => {
   try {
-    const { city, currency, category, minPrice, maxPrice, page } = req.body;
+    const { city, currency, category, minPrice, maxPrice, name, page } = req.body;
     const Query = {
+      name: {$regex : new RegExp(name , "i")}, 
       city: city,
       currency: currency,
       category: category,
       cost: { $gt: minPrice, $lt: maxPrice }
-    };   
+    };
 
     if (!minPrice) {
       delete Query.cost["$gt"];
     }
     if (!maxPrice) {
       delete Query.cost["$lt"];
+    }
+    if(!name){
+      delete Query.name;
     }
     for (let i in Query) {
       if (!Query[i]) {
@@ -105,7 +114,7 @@ router.post("/GetProducts", async (req, res) => {
         length: ProductsLength,
         isError: false
       });
-    }else{
+    } else {
       res.send({
         message: "Nothing Found",
         isError: true
@@ -113,13 +122,15 @@ router.post("/GetProducts", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.statusCode(400);
+    res.status(400);
     res.send({
       message: "Server Error",
       isError: true,
     });
   }
 })
+
+
 
 router.get("/GetProductbyOwnerID:id", async (req, res) => {
   try {
@@ -143,6 +154,9 @@ router.get("/GetProductbyOwnerID:id", async (req, res) => {
     });
   }
 });
+
+
+
 router.get("/GetProductbyId/:id", async (req, res) => {
   try {
     const candidate = await Product.findById(req.params.id);
@@ -159,6 +173,37 @@ router.get("/GetProductbyId/:id", async (req, res) => {
     }
   } catch (e) {
     console.log(e);
+    res.send({
+      message: "Server Error",
+      isError: true,
+    });
+  }
+});
+
+router.post("/DeleteProduct", async (req, res) => {
+  try{
+    const {ownerID, productID} = req.body;
+
+    const owner = await User.findById(ownerID);
+    const product = await Product.findById(productID);
+
+    if(owner && product && owner.id === product.ownerID){
+      product.delete();
+      res.status(200);
+      res.send({
+        message: "UserDeleted",
+        isError: false
+      });
+    }else{
+      res.status(400);
+      res.send({
+        message: "Server Error",
+        isError: true
+      });
+    }
+  }catch (e){
+    console.log(e);
+    res.status(400);
     res.send({
       message: "Server Error",
       isError: true,

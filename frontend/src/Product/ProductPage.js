@@ -2,22 +2,24 @@ import React from "react";
 import "./Product.css";
 import { FastAverageColor } from 'fast-average-color';
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 export default function ProductPage(props) {
   const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
 
-  const { id } = useParams();
-  const [PhotoArrayLength, setPhotoArrayLength] = useState(null);
-  const [Product, setProduct] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [PhotoIndex, setPhotoIndex] = useState(0);
-  const [ScrollColor, setScrollColor] = useState();
+  const navigate = useNavigate();
 
-  const CheckColor = async () => {
+  const { id } = useParams();
+  const [photoArrayLength, setPhotoArrayLength] = useState(null);
+  const [product, setProduct] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+  const [scrollColor, setScrollColor] = useState();
+
+  const checkColor = async () => {
     if (isLoaded) {
       let fac = new FastAverageColor();
-      const color = await fac.getColorAsync(PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]);
+      const color = await fac.getColorAsync(PHTOTURL + JSON.parse(product.photos)[photoIndex]);
       if (color.isDark) {
         setScrollColor("white");
       } else {
@@ -33,49 +35,75 @@ export default function ProductPage(props) {
     setIsLoaded(true);
   }
 
+  const deleteProdoct = () => {
+    fetch("http://localhost:4001/api/products/DeleteProduct", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ownerID: product.ownerID,
+        productID: product["_id"]
+      })
+    }).then(res => res.json())
+      .then(result => {
+        if (!result.isError) {
+          navigate("/");
+        }
+      });
+  }
+
   useEffect(() => {
     getData();
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if(isLoaded){
-      setPhotoArrayLength(JSON.parse(Product.photos).length - 1);
+    if (isLoaded) {
+      setPhotoArrayLength(JSON.parse(product.photos).length - 1);
     }
     // eslint-disable-next-line
-  },[isLoaded])
+  }, [isLoaded])
 
   useEffect(() => {
-    CheckColor();
+    checkColor();
     // eslint-disable-next-line
-  }, [PhotoIndex]);
+  }, [photoIndex]);
 
   const ScrollButtons = () => {
-    if (PhotoArrayLength > 1) {
+    if (photoArrayLength > 1) {
       return (
         <div>
           <button
             className="ScrollImage"
             id="ScrollPhotoForward"
-            onClick={() => ScrollPhoto("Forward")}
-            style={{ color: ScrollColor }}>&#8250;</button>
+            onClick={() => scrollPhoto("Forward")}
+            style={{ color: scrollColor }}>&#8250;</button>
           <button
             className="ScrollImage"
             id="ScrollPhotoBack"
-            onClick={() => ScrollPhoto("Back")}
-            style={{ color: ScrollColor }}>&#8249;</button>
+            onClick={() => scrollPhoto("Back")}
+            style={{ color: scrollColor }}>&#8249;</button>
         </div>
       );
     }
   }
 
-  const ScrollPhoto = (direction) => {
-    if (direction === "Forward" && PhotoIndex < PhotoArrayLength) {
-      setPhotoIndex(PhotoIndex + 1);
+  const scrollPhoto = (direction) => {
+    if (direction === "Forward" && photoIndex < photoArrayLength) {
+      setPhotoIndex(photoIndex + 1);
     }
 
-    if (direction === "Back" && PhotoIndex > 0) {
-      setPhotoIndex(PhotoIndex - 1);
+    if (direction === "Back" && photoIndex > 0) {
+      setPhotoIndex(photoIndex - 1);
+    }
+  }
+
+  const deleteButton = () => {
+    if (props.User["_id"] === product.ownerID) {
+      return (
+        <button id="DeleteButton" onClick={() => deleteProdoct()}>Delete</button>
+      )
     }
   }
 
@@ -88,17 +116,18 @@ export default function ProductPage(props) {
   return (
     <div id="ProductPage">
       <div id="ProductPrice">
-        <h1>{Product.name}</h1>
-        <h2>{Product.cost} {Product.currency}</h2>
+        <h1>{product.name}</h1>
+        <h2>{product.cost} {product.currency}</h2>
         <button>
-          <a rel="noreferrer" href={"mailto:https://" + (JSON.parse(Product.owner).email)} target="_blank">send mail</a>
+          <a rel="noreferrer" href={"mailto:https://" + (JSON.parse(product.owner).email)} target="_blank">send mail</a>
         </button>
       </div>
       <div id="ProductPageDescription">
-        <h3>{"|Місто : " + Product.city + " Категорія: " + Product.category + " |" + Product.description}</h3>
+        <h3>{"|Місто : " + product.city + " Категорія: " + product.category + " |" + product.description}</h3>
       </div>
-      <div>{ScrollButtons()}</div>
-      <div id="ProductImage">  <img alt="" src={PHTOTURL + JSON.parse(Product.photos)[PhotoIndex]} /></div>
+      <ScrollButtons/>
+      <div id="ProductImage">  <img alt="" src={PHTOTURL + JSON.parse(product.photos)[photoIndex]} /></div>
+      <deleteButton/>
     </div>
   );
 

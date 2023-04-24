@@ -1,7 +1,7 @@
 import React from "react";
 import "./auth.css";
 import ErrorWindow from "../ErrorWindow.js";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPage(props) {
@@ -9,46 +9,75 @@ export default function RegistrationPage(props) {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
-  document.getElementsByTagName("title")[0].innerHTML = "Registration";
+  useEffect(() => {
 
-  
+    if (localStorage.getItem("NowUser") !== "undefined") {
 
-  const GetData = () => {
-    const RegData = {
+      const user = JSON.parse(localStorage.getItem("NowUser"));
+      if (user) {
+        const data = {
+          email: user.email,
+          password: user.password
+        };
+        fetch("http://localhost:4001/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: (JSON.stringify(data))
+        })
+          .then(res => res.json())
+          .then(result => {
+            if (!result.isError) {
+              props.sendUser(result.message);
+              navigate("/");
+            }
+          })
+      }
+    }
+    // eslint-disable-next-line
+  }, []);
+
+
+
+
+  const getData = () => {
+    const regData = {
       nickname: document.getElementById("nicknameInput").value,
       email: document.getElementById("emailInput").value,
       password: document.getElementById("passwordInput").value,
       confirmPassword: document.getElementById("confirmpasswordInput").value,
     };
-    validate(RegData);
+    validate(regData);
   }
 
-  const validate = (RegData) => {
+  const validate = (regData) => {
     if (
-      RegData.nickname === "" ||
-      RegData.email === "" ||
-      RegData.password === "" ||
-      RegData.confirmPassword === ""
+      regData.nickname === "" ||
+      regData.email === "" ||
+      regData.password === "" ||
+      regData.confirmPassword === ""
     ) {
       setErrorMessage("Не все поля заполнены");
 
-    } else if (RegData.nickname.length < 4) {
+    } else if (regData.nickname.length < 4) {
 
       setErrorMessage("Никнейм слишком короткий");
 
-    } else if (RegData.email.includes("@") === false
-      || RegData.email.split("@")[1].includes(".") === false) {
+    } else if (regData.email.includes("@") === false
+      || regData.email.split("@")[1].includes(".") === false) {
 
       setErrorMessage("Почта введена неправильно");
 
-    } else if (RegData.password !== RegData.confirmPassword) {
+    } else if (regData.password !== regData.confirmPassword) {
 
       setErrorMessage("Пароли не совпадают");
 
-    } else if (RegData.password.length < 5) {
-      setErrorMessage("Пароль спишком короткий");
+    } else if (regData.password.length < 5) {
+      setErrorMessage("Password is too short");
     } else {
-      sendData(RegData);
+      sendData(regData);
     }
   }
 
@@ -95,7 +124,7 @@ export default function RegistrationPage(props) {
               id="nicknameInput"
               name="Nickname"
               minLength="4"
-              maxLength="20"/>
+              maxLength="20" />
           </div>
           <div className="Forms" id="Email">
             <p>Email</p>
@@ -103,7 +132,7 @@ export default function RegistrationPage(props) {
               id="emailInput"
               name="Email"
               minLength="5"
-              maxLength="30"/>
+              maxLength="30" />
           </div>
           <div className="Forms" id="Password">
             <p>Password</p>
@@ -122,7 +151,7 @@ export default function RegistrationPage(props) {
               minLength="5"
               maxLength="30" />
           </div>
-          <button id="SendButton" onClick={() => GetData()}>Create Account</button>
+          <button id="SendButton" onClick={() => getData()}>Create Account</button>
           <p id="GotoLogin">Have an account?
             <button id="Login-Reg" onClick={() => navigate("/Login")}>Log in</button>
           </p>
