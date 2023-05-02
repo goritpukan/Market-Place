@@ -1,12 +1,15 @@
 import React from "react";
 import "./auth.css";
 import ErrorWindow from "../ErrorWindow.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const inputRef = useRef({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,10 +47,10 @@ export default function RegistrationPage(props) {
 
   const getData = () => {
     const regData = {
-      nickname: document.getElementById("nicknameInput").value,
-      email: document.getElementById("emailInput").value,
-      password: document.getElementById("passwordInput").value,
-      confirmPassword: document.getElementById("confirmpasswordInput").value,
+      nickname: inputRef.current.nickname.value,
+      email: inputRef.current.email.value,
+      password: inputRef.current.password.value,
+      confirmPassword: inputRef.current.confirmPassword.value,
     };
     validate(regData);
   }
@@ -121,6 +124,7 @@ export default function RegistrationPage(props) {
           <div className="Forms" id="Name">
             <p>Nickname</p>
             <input type="text"
+              ref={el => inputRef.current.nickname = el}
               id="nicknameInput"
               name="Nickname"
               minLength="4"
@@ -129,6 +133,7 @@ export default function RegistrationPage(props) {
           <div className="Forms" id="Email">
             <p>Email</p>
             <input type="email"
+              ref={el => inputRef.current.email = el}
               id="emailInput"
               name="Email"
               minLength="5"
@@ -137,6 +142,7 @@ export default function RegistrationPage(props) {
           <div className="Forms" id="Password">
             <p>Password</p>
             <input
+              ref={el => inputRef.current.password = el}
               id="passwordInput"
               type="password"
               name="Password"
@@ -146,6 +152,7 @@ export default function RegistrationPage(props) {
           <div className="Forms" id="Password">
             <p>Confirm Password</p>
             <input type="Password"
+              ref={el => inputRef.current.confirmPassword = el}
               id="confirmpasswordInput"
               name="Confirm Password"
               minLength="5"

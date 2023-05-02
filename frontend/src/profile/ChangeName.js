@@ -1,16 +1,18 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ErrorWindow from "../ErrorWindow";
 
 export default function ChangeName(props) {
   const [error, setError] = useState();
 
+  const inputRef = useRef(null);
+
   if (props.isActive) {
-    
+
     const ChangeName = () => {
       const data = {
         nickname: props.nickname,
-        newnickname: document.getElementById("ChangeNameInput").value
+        newnickname: inputRef.current.value
       }
       if (props.nickname !== data.newnickname && data.newnickname.length >= 4 && data.newnickname.length <= 20) {
         fetch("http://localhost:4001/api/auth/ChangeName", {
@@ -45,6 +47,7 @@ export default function ChangeName(props) {
           closeWindow={CloseErrorWindow} />
         <button className="Exit" onClick={props.CloseWindow}>Exit</button>
         <input
+          ref={inputRef}
           type="text"
           id="ChangeNameInput"
           className="ChangeInput"

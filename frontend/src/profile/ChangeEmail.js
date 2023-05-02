@@ -1,16 +1,19 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ErrorWindow from "../ErrorWindow";
 
 export default function ChangeEmail(props) {
   const [error, setError] = useState();
+
+  const inputRef = useRef({});
+
   if (props.isActive) {
 
     const changeEmail = () => {
       const data = {
-        password: document.getElementById("ChangeEmailPasswordInput").value,
+        password: inputRef.current.password.value,
         email: props.email,
-        newemail: document.getElementById("ChangeEmailInput").value
+        newemail: inputRef.current.email.value,
       }
       if (props.email !== data.newemail && data.password) {
         fetch("http://localhost:4001/api/auth/ChangeEmail", {
@@ -44,6 +47,7 @@ export default function ChangeEmail(props) {
           closeWindow={closeErrorWindow} />
         <button className="Exit" onClick={props.CloseWindow}>Exit</button>
         <input
+          ref={el => inputRef.current.email = el}
           type="email"
           className="ChangeInput"
           id="ChangeEmailInput"
@@ -51,6 +55,7 @@ export default function ChangeEmail(props) {
           maxLength="30"
           placeholder="Type new email" />
         <input
+          ref={el => inputRef.current.password = el }
           id="ChangeEmailPasswordInput"
           className="ChangeInput"
           type="Password"

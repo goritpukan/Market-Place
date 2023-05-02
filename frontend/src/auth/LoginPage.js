@@ -1,14 +1,14 @@
 import React from "react";
 import "./auth.css";
 import ErrorWindow from "../ErrorWindow.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
+  const inputRef = useRef({});
   useEffect(() => {
 
     if (localStorage.getItem("NowUser") !== "undefined") {
@@ -41,8 +41,8 @@ export default function LoginPage(props) {
 
   const getData = () => {
     const regData = {
-      email: document.getElementById("emailInput").value,
-      password: document.getElementById("passwordInput").value,
+      email: inputRef.current.email.value,
+      password: inputRef.current.password.value,
     };
     validate(regData);
   }
@@ -102,6 +102,7 @@ export default function LoginPage(props) {
           <div className="Forms" id="Email">
             <p>Email</p>
             <input type="email"
+              ref={el => inputRef.current.email = el}
               id="emailInput"
               name="Email"
               minLength="5"
@@ -110,6 +111,7 @@ export default function LoginPage(props) {
           <div className="Forms" id="Password">
             <p>Password</p>
             <input
+              ref={el => inputRef.current.password = el}
               id="passwordInput"
               type="Password"
               name="Password"

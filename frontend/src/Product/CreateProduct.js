@@ -4,7 +4,7 @@ import "./Product.css";
 import ImageList from "./ImageList";
 import ErrorWindow from "../ErrorWindow";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateProduct(props) {
@@ -13,6 +13,8 @@ export default function CreateProduct(props) {
 
   const [photos, setPhotos] = useState([]);
   const [error, setError] = useState();
+
+  const inputRef = useRef({});
 
   const getImage = () => {
     const image = document.getElementById("image").files[0];
@@ -33,12 +35,12 @@ export default function CreateProduct(props) {
   }
   const getData = () => {
     const data = {
-      name: document.getElementById("ProductName").value,
-      description: document.getElementById("ProductDescription").value,
-      cost: document.getElementById("ProductCost").value,
-      city: document.getElementById("City").value,
-      category: document.getElementById("Category").value,
-      currency: document.getElementById("Currency").value,
+      name: inputRef.current.name.value,
+      description: inputRef.current.description.value,
+      cost: inputRef.current.cost.value,
+      city: inputRef.current.city.value,
+      category: inputRef.current.category.value,
+      currency: inputRef.current.currency.value,
       owner: {
         email: props.User.email,
         nickname: props.User.nickname,
@@ -70,7 +72,7 @@ export default function CreateProduct(props) {
         if (!result.isError) {
           if (photos) {
             sendPhoto(result.id);
-          }else{
+          } else {
             navigate("/Profile");
           }
         } else {
@@ -104,20 +106,23 @@ export default function CreateProduct(props) {
   return (
     <div id="CreateShopPage">
       <ErrorWindow
-      errorMessage={error} 
-      closeWindow={closeErrorWindow}/>
+        errorMessage={error}
+        closeWindow={closeErrorWindow} />
       <input
+        ref={el => inputRef.current.image = el}
         type="file"
         id="image"
         accept="image/png, image/jpg"
         onChange={() => getImage()} />
       <input type="Text"
+        ref={el => inputRef.current.name = el}
         className="ShopInput"
         id="ProductName"
         placeholder="Product Name"
         minLength="5"
         maxLength="30" />
       <textarea type="Text"
+        ref={el => inputRef.current.description = el}
         className="ShopInput"
         id="ProductDescription"
         placeholder="Product Description"
@@ -128,26 +133,27 @@ export default function CreateProduct(props) {
         deleteImage={deleteImage} />
       <div id="CostDiv">
         <input type="Number"
+          ref={el => inputRef.current.cost = el}
           className="ShopInput"
           id="ProductCost"
           placeholder="Price"
           min="1"
           max="1000000000" />
-        <select id="Currency">
+        <select id="Currency" ref={el => inputRef.current.currency = el}>
           <option value="UAH">UAH</option>
           <option value="$">$</option>
           <option value="€">€</option>
         </select>
       </div>
       <div id="Selects">
-        <select id="City">
+        <select id="City" ref={el => inputRef.current.city = el}>
           <option value="Київ">Київ</option>
           <option value="Одеса">Одеса</option>
           <option value="Львів">Львів</option>
           <option value="Харків">Харків</option>
           <option value="Інше">Інше</option>
         </select>
-        <select id="Category">
+        <select id="Category" ref={el => inputRef.current.category = el}>
           <option value="Нерухомість">Нерухомість</option>
           <option value="Авто">Авто</option>
           <option value="Електроніка">Електроніка</option>
@@ -158,7 +164,7 @@ export default function CreateProduct(props) {
           <option value="Інше">Інше</option>
         </select>
       </div>
-      <button id="ChooseImage" onClick={() => { if (photos.length < 10) { document.getElementById("image").click() } }}>Add Image</button>
+      <button id="ChooseImage" onClick={() => { if (photos.length < 10) { inputRef.current.image.click() } }}>Add Image</button>
       <button id="CreateShopButton" onClick={() => getData()}>Create</button>
     </div>
   )
