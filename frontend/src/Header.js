@@ -9,13 +9,13 @@ export default function Header(props) {
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
 
   const Avatar = () => {
-    if (props.User) {
+    if (props.user) {
       return (
-        <img alt="" onClick={() => setDropdownOpen(!dropdownOpen)} src={AVATARURL + props.User.avatar}></img>
+        <img alt="" onClick={() => setDropdownOpen(!dropdownOpen)} src={AVATARURL + props.user.avatar}></img>
       );
     }
     return (
-      <button id="LogIn" onClick={() => navigate("/Login")}>Log in</button>
+      <button id="LogIn" onClick={() => navigate("/login")}>Log in</button>
     )
   }
   const Dropdown = () => {
@@ -23,15 +23,15 @@ export default function Header(props) {
       return (
         <div id="Dropdown">
           <button onClick={() => {
-            navigate("/Profile")
+            navigate("/profile")
             setDropdownOpen(!dropdownOpen)
           }}>Open Profile</button>
           <button onClick={() => {
-            navigate("/CreateProduct");
+            navigate("/create_product");
             setDropdownOpen(!dropdownOpen)
           }}>Create Product</button>
           <button onClick={() => {
-            if (window.location.pathname === "/Profile" || window.location.pathname === "/CreateProduct")
+            if (window.location.pathname === "/profile" || window.location.pathname === "/create_product")
               navigate("/");
             props.logOut();
             setDropdownOpen(!dropdownOpen)
@@ -41,10 +41,11 @@ export default function Header(props) {
       )
     }
   }
-  if (window.location.pathname !== "/Login" && window.location.pathname !== "/Registration") {
+  if (window.location.pathname !== "/login" && window.location.pathname !== "/registration") {
     return (
       <header>
         <button className="MainButton" onClick={() => navigate("/")}>Main</button>
+        <button>{}</button>
         <Avatar />
         <Dropdown />
       </header>

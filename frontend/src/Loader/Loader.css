@@ -1,4 +1,4 @@
-#loaderDiv {
+.loader-div {
   background-color: rgb(38, 38, 38);
   position: absolute;
   width: 100%;

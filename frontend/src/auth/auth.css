@@ -1,108 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap');
-*{
+
+:root {
+  --dark-background: rgb(23, 23, 23);
+  --dark-form-background: rgb(35, 35, 35);
+  --dark-input-border: rgb(255, 255, 255);
+
+  --light-background: #c0c0c0;
+  --light-form-bacground: #fff;
+  --light-input-border: rgb(0, 0, 0);
+}
+
+* {
   margin: 0;
   font-family: 'Alegreya Sans', sans-serif;
 }
-.Forms input{
-  border-width: 0.5px;
-  background-color: rgb(61, 61, 61);
-  border-width: 0;
-  border-bottom-width: 2px;
-  position: relative;
-  width: 90%;
-  left: 5%;
+
+#light {
+  background-color: var(--light-background);
+  color: black;
+}
+
+#dark {
+  background-color: var(--dark-background);
   color: white;
-  opacity: 1;
-  font-size: 20px;
-  transition: .5s;
 }
-p{
-  margin-top: 30px;
-}
-a{
-  position: relative;
-  width: 20%;
-  height: 10%;
-}
-button{
+
+.auth-page {
   transition: .3s;
-  border-width: 0px;
-  color: white;
-  background-color: rgb(23, 66, 207);
-}
-button:hover{
-  background-color: rgb(16, 48, 152);
-}
-@keyframes onstart{
-  0% {opacity: 0;}
-  100% {opacity: 1;}
-}
-
-input:invalid{
-  border-color: red;
-  border-style: solid;
-}
-input:focus{
-  border-bottom-width: 3px;
-  border-color: rgb(255, 255, 255);
-  outline: none;
-}
-
-#RegistrationPage{
-  background-color: rgb(38, 38, 38);
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-#RegistrationForm{
-  background-color: rgb(61, 61, 61);
-  position: absolute;
-  width: 60%;
-  height: 80%;
-  left: 20%;
-  top: 10%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 120px;
-  grid-auto-columns: minmax(100px, auto);;
-  grid-gap: 70px;
-  border-radius: 10px;
-  border-width: 1px;
-  border-color: black;
-  animation: onstart 1.5s forwards;
+#dark .login-form {
+  background-color: var(--dark-form-background);
 }
 
-.Forms{
-  display: grid;
-  grid-column-gap: 10px;
-  text-align: center;
-  font-size: 30px;
-  color: white;
-  border-width: 0px;
+#light .login-form {
+  background-color: var(--light-form-bacground);
 }
 
-#SendButton{
-  position: absolute;
-  width: 50%;
-  height: 10%;
-  top: 70%;
-  left: 25%;
-  border-radius: 20px;
-  border-width: 0;
-  color: white;
-  font-size: 20px;
-}
-
-#LoginPage{
-  background-color: rgb(38, 38, 38);
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-#LoginForm{
-  background-color: rgb(61, 61, 61);
+.login-form {
+  transition: .3s;
   position: absolute;
   width: 60%;
   height: 80%;
@@ -110,78 +49,162 @@ input:focus{
   top: 10%;
   display: grid;
   grid-template-columns: 1fr;
-  grid-auto-rows: 120px;
-  grid-auto-columns: minmax(100px, auto);
-  grid-gap: 70px;
+  grid-template-rows: repeat(4, 1fr);
   border-radius: 10px;
   border-width: 1px;
   border-color: black;
-  animation: onstart 1.5s forwards;
 }
 
-#ShowPassword{
-  position: relative;
-  left: 85%;
-  bottom: 120%;
-  width: 10%;
-  height: 100%;
-  z-index: 2;
+.forms {
+  padding: 10px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
 }
 
-#GotoLogin{
-  position: absolute;
+#light .forms input {
+  background-color: var(--light-form-background);
+  border-color: var(--light-input-border);
+  color: black;
+}
+
+#dark .forms input {
+  background-color: var(--dark-form-background);
+  border-color: var(--dark-input-border);
   color: white;
-  top: 90%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
-#Login-Reg{
-  color: white;
-  border-radius: 5px;
+.forms input {
+  grid-column-start: auto;
+  border-width: 0.5px;
   border-width: 0;
-  margin-left: 10px;
+  border-bottom-width: 2px;
+  opacity: 1;
+  font-size: 2vw;
 }
 
-#ErrorButton:hover{
-  background: linear-gradient(rgb(209, 0, 0), rgb(130, 0, 0));
+
+input:invalid {
+  border-color: red;
+  border-style: solid;
 }
 
-#ConfirmWindow{
-  width: 70%;
-  height: 50%;
-  position: absolute;
-  left: 15%;
-  top: 25%;
-  opacity: 0;
-  animation: ani .8s forwards;
-  z-index: 2;
+input:focus {
+  border-bottom-width: 3px;
+  border-color: rgb(255, 255, 255);
+  outline: none;
+}
+
+.forms p,
+.change-form p {
   text-align: center;
-  background-color: rgb(79, 79, 79);
-  border-radius: 20px;
+  justify-self: center;
+  align-self: end;
+  font-size: 2.5vw;
 }
 
-#ConfirmText{
+.send-button {
   position: relative;
-  top:20%;
-  text-align: center;
-  color: white;
+  width: 50%;
+  height: 40%;
+  border-radius: 10px;
+  justify-self: center;
+  align-self: end;
+  font-size: 2vw;
+  margin: 0;
 }
 
-#ConfirmButton{
+.forms button {
+  position: relative;
   width: 30%;
-  height: 15%;
-  border-radius: 20px;
-  border-width: 0px;
-  position: absolute;
-  left: 35%;
-  top: 70%;
-  color: white;
-  font-size: 20px;
-  background: linear-gradient(rgb(0, 213, 7), rgb(0, 119, 4));
+  height: 40%;
+  align-self: start;
+  justify-self: center;
+  margin: 0;
+  font-size: auto;
 }
 
-#ConfirmButton:hover{
-  background: linear-gradient(rgb(0, 193, 7), rgb(0, 99, 4));
+button {
+  transition: .3s;
+  border-width: 0px;
+  background-color: rgb(23, 66, 207);
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgb(16, 48, 152);
+}
+
+
+#dark .registration-form {
+  background-color: var(--dark-form-background);
+}
+
+#light .registration-form {
+  background-color: var(--light-form-bacground);
+}
+
+.registration-form {
+  position: absolute;
+  width: 60%;
+  height: 80%;
+  left: 20%;
+  top: 10%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(4, 1fr);
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: black;
+}
+
+.registration-form button {
+  grid-row-start: 3;
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.change-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+.change-form button {
+  margin: 0;
+  grid-row-start: 2;
+  position: relative;
+  width: 30%;
+  height: 40%;
+  justify-self: center;
+}
+
+
+@media  (min-width: 0) and (max-width: 1000px) {
+
+  .login-form,
+  .registration-form {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .forms input{
+    font-size: 20px;
+  }
+  .forms p, .change-form p  {
+    font-size: 1.5em;
+  }
+  .forms button, .change-form button {
+    font-size: 1em;
+    align-self: end;
+    margin: 0;
+    width: 30%;
+  }
+  .send-button{
+    font-size: 20px;
+  }
+  
 }

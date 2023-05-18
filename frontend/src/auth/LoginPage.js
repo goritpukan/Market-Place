@@ -1,43 +1,18 @@
 import React from "react";
 import "./auth.css";
+import { ThemeContext } from "../App";
 import ErrorWindow from "../ErrorWindow.js";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 export default function LoginPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
+  const { theme } = useContext(ThemeContext);
+
   const navigate = useNavigate();
   const inputRef = useRef({});
-  useEffect(() => {
-
-    if (localStorage.getItem("NowUser") !== "undefined") {
-      const User = JSON.parse(localStorage.getItem("NowUser"));
-
-      if (User) {
-        const data = {
-          email: User.email,
-          password: User.password
-        };
-        fetch("http://localhost:4001/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: (JSON.stringify(data))
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (!result.isError) {
-              props.sendUser(result.message);
-              navigate("/");
-            }
-          })
-      }
-    }
-    // eslint-disable-next-line
-  }, []);
 
   const getData = () => {
     const regData = {
@@ -93,33 +68,34 @@ export default function LoginPage(props) {
     setErrorMessage(null);
   }
   return (
-    <div id="LoginPage">
+    <div className="auth-page" id={theme}>
       <ErrorWindow
         errorMessage={errorMessage}
         closeWindow={closeWindow} />
       <div>
-        <div id="LoginForm">
-          <div className="Forms" id="Email">
+        <div className="login-form">
+          <div className="forms" >
             <p>Email</p>
             <input type="email"
               ref={el => inputRef.current.email = el}
-              id="emailInput"
               name="Email"
               minLength="5"
               maxLength="30" />
           </div>
-          <div className="Forms" id="Password">
+          <div className="forms" >
             <p>Password</p>
             <input
               ref={el => inputRef.current.password = el}
-              id="passwordInput"
               type="Password"
               name="Password"
               minLength="5"
               maxLength="30" />
           </div>
-          <button id="SendButton" onClick={() => getData()}>Log in</button>
-          <p id="GotoLogin">Don't have an account? <button id="Login-Reg" onClick={() => navigate("/Registration")}>Create account</button></p>
+          <button className="send-button" onClick={() => getData()}>Log in</button>
+          <div className="forms">
+            <p>Don't have an account? </p>
+            <button onClick={() => navigate("/registration")}>Create account</button>
+          </div>
         </div>
       </div>
     </div>

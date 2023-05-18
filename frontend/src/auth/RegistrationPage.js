@@ -1,49 +1,17 @@
 import React from "react";
 import "./auth.css";
+import { ThemeContext } from "../App";
 import ErrorWindow from "../ErrorWindow.js";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function RegistrationPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
-
-  const inputRef = useRef({});
+  const {theme} = useContext(ThemeContext);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-
-    if (localStorage.getItem("NowUser") !== "undefined") {
-
-      const user = JSON.parse(localStorage.getItem("NowUser"));
-      if (user) {
-        const data = {
-          email: user.email,
-          password: user.password
-        };
-        fetch("http://localhost:4001/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          body: (JSON.stringify(data))
-        })
-          .then(res => res.json())
-          .then(result => {
-            if (!result.isError) {
-              props.sendUser(result.message);
-              navigate("/");
-            }
-          })
-      }
-    }
-    // eslint-disable-next-line
-  }, []);
-
-
-
+  const inputRef = useRef({});
 
   const getData = () => {
     const regData = {
@@ -84,6 +52,7 @@ export default function RegistrationPage(props) {
     }
   }
 
+
   const sendData = async (RegData) => {
     const data = {
       nickname: RegData.nickname,
@@ -114,54 +83,51 @@ export default function RegistrationPage(props) {
   }
 
   return (
-    <div id="RegistrationPage">
+    <div className="auth-page" id={theme}>
       <ErrorWindow
         errorMessage={errorMessage}
         closeWindow={closeWindow} />
 
       <div>
-        <div id="RegistrationForm">
-          <div className="Forms" id="Name">
+        <div className="registration-form">
+          <div className="forms" >
             <p>Nickname</p>
             <input type="text"
               ref={el => inputRef.current.nickname = el}
-              id="nicknameInput"
               name="Nickname"
               minLength="4"
               maxLength="20" />
           </div>
-          <div className="Forms" id="Email">
+          <div className="forms">
             <p>Email</p>
             <input type="email"
               ref={el => inputRef.current.email = el}
-              id="emailInput"
               name="Email"
               minLength="5"
               maxLength="30" />
           </div>
-          <div className="Forms" id="Password">
+          <div className="forms">
             <p>Password</p>
             <input
               ref={el => inputRef.current.password = el}
-              id="passwordInput"
               type="password"
               name="Password"
               minLength="5"
               maxLength="30" />
           </div>
-          <div className="Forms" id="Password">
+          <div className="forms">
             <p>Confirm Password</p>
             <input type="Password"
               ref={el => inputRef.current.confirmPassword = el}
-              id="confirmpasswordInput"
               name="Confirm Password"
               minLength="5"
               maxLength="30" />
           </div>
-          <button id="SendButton" onClick={() => getData()}>Create Account</button>
-          <p id="GotoLogin">Have an account?
-            <button id="Login-Reg" onClick={() => navigate("/Login")}>Log in</button>
-          </p>
+          <button className="send-button" onClick={() => getData()}>Create Account</button>
+          <div className="change-form">
+            <p>Have already an account?</p>
+            <button onClick={() => navigate("/login")}>Log in</button>
+          </div>
         </div>
       </div>
     </div>

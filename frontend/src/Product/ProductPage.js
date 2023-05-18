@@ -1,5 +1,7 @@
 import React from "react";
 import "./Product.css";
+import Loader from "../Loader/Loader";
+import BuyForm from "./BuyForm";
 import { FastAverageColor } from 'fast-average-color';
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -14,7 +16,8 @@ export default function ProductPage(props) {
   const [product, setProduct] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [scrollColor, setScrollColor] = useState();
+  const [scrollColor, setScrollColor] = useState("");
+  const [buyFormActive, setBuyFormActive] = useState(false);
 
   const checkColor = async () => {
     if (isLoaded) {
@@ -53,6 +56,10 @@ export default function ProductPage(props) {
       });
   }
 
+  const handleActiveChange = () => {
+    setBuyFormActive((prevBuyFormActive) => !prevBuyFormActive);
+  }
+
   useEffect(() => {
     getData();
     // eslint-disable-next-line
@@ -77,19 +84,19 @@ export default function ProductPage(props) {
           <button
             className="ScrollImage"
             id="ScrollPhotoForward"
-            onClick={() => scrollPhoto("Forward")}
+            onClick={() => handleScroll("Forward")}
             style={{ color: scrollColor }}>&#8250;</button>
           <button
             className="ScrollImage"
             id="ScrollPhotoBack"
-            onClick={() => scrollPhoto("Back")}
+            onClick={() => handleScroll("Back")}
             style={{ color: scrollColor }}>&#8249;</button>
         </div>
       );
     }
   }
 
-  const scrollPhoto = (direction) => {
+  const handleScroll = (direction) => {
     if (direction === "Forward" && photoIndex < photoArrayLength) {
       setPhotoIndex(photoIndex + 1);
     }
@@ -99,8 +106,8 @@ export default function ProductPage(props) {
     }
   }
 
-  const deleteButton = () => {
-    if (props.User["_id"] === product.ownerID) {
+  const DeleteButton = () => {
+    if (props.user??["_id"] === product.ownerID) {
       return (
         <button id="DeleteButton" onClick={() => deleteProdoct()}>Delete</button>
       )
@@ -109,12 +116,13 @@ export default function ProductPage(props) {
 
   if (!isLoaded) {
     return (
-      <h1>Loadind...</h1>
+      <Loader />
     );
   }
 
   return (
     <div id="ProductPage">
+      <BuyForm isActive={buyFormActive} exit={handleActiveChange} />
       <div id="ProductPrice">
         <h1>{product.name}</h1>
         <h2>{product.cost} {product.currency}</h2>
@@ -125,9 +133,10 @@ export default function ProductPage(props) {
       <div id="ProductPageDescription">
         <h3>{"|Місто : " + product.city + " Категорія: " + product.category + " |" + product.description}</h3>
       </div>
-      <ScrollButtons/>
+      <ScrollButtons />
       <div id="ProductImage">  <img alt="" src={PHTOTURL + JSON.parse(product.photos)[photoIndex]} /></div>
-      <deleteButton/>
+      <DeleteButton />
+      <button onClick={() => handleActiveChange()} style={{ position: "absolute", left: "500px" }}>Buy</button>
     </div>
   );
 

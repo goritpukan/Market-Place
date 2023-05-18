@@ -42,12 +42,12 @@ export default function CreateProduct(props) {
       category: inputRef.current.category.value,
       currency: inputRef.current.currency.value,
       owner: {
-        email: props.User.email,
-        nickname: props.User.nickname,
-        avatar: props.User.avatar
+        email: props.user.email,
+        nickname: props.user.nickname,
+        avatar: props.user.avatar
       },
 
-      ownerID: props.User["_id"]
+      ownerID: props.user["_id"]
     };
     validate(data);
   }

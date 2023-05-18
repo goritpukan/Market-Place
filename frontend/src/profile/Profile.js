@@ -8,7 +8,7 @@ import ChangeEmail from "./ChangeEmail";
 import MyProducts from "./MyProducts";
 
 export default function Profile(props) {
-  const [user, setUser] = useState(props.User);
+  const [user, setUser] = useState(props.user);
   const [photoActiveState, setPhotoActiveState] = useState(false);
   const [nameActiveState, setNameActiveState] = useState(false);
   const [emailActiveState, setEmailActiveState] = useState(false);
@@ -16,27 +16,27 @@ export default function Profile(props) {
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
 
   const updateUserInfo = () => {
-    const data = {
-      email: user.email,
-      password: user.password
-    };
-    fetch("http://localhost:4001/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
-      .then((res) => res.json())
-      .then(result => {
-        if (!result.isError) {
-          setUser(result.message)
-        } else {
-          console.log(result.message)
-        }
-      });
-    props.UpdateUser(user);
+    if (user) {
+      const data = {
+        email: user.email,
+        password: user.password
+      };
+      fetch("http://localhost:4001/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+        .then((res) => res.json())
+        .then(result => {
+          if (!result.isError) {
+            setUser(result.message);
+          }
+        });
+      props.updateUser(user);
+    }
 
   }
   useEffect(() => {

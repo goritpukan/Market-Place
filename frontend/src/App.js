@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./app.css";
 
@@ -13,11 +13,17 @@ const ProductPage = lazy(() => import("./Product/ProductPage.js"));
 const Profile = lazy(() => import("./Profile/Profile.js"));
 const CreateProduct = lazy(() => import("./Product/CreateProduct.js"));
 
+
+export const ThemeContext = createContext(null);
+
 export default function App(props) {
+  const [theme, setTheme] = useState("dark");
+
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("NowUser") !== "undefined" && localStorage.getItem("NowUser") !== "null") {
+    if (localStorage.getItem("NowUser") !== "undefined" && localStorage.getItem("NowUser") !== null) {
       const user = JSON.parse(localStorage.getItem("NowUser"));
 
       const data = {
@@ -41,10 +47,10 @@ export default function App(props) {
     }
   }, []);
 
-  const login = (_User) => {
-    setUser(_User);
-    _User = JSON.stringify(_User);
-    localStorage.setItem("NowUser", _User);
+  const login = (_user) => {
+    setUser(_user);
+    _user = JSON.stringify(_user);
+    localStorage.setItem("NowUser", _user);
   }
 
   const logOut = () => {
@@ -52,25 +58,27 @@ export default function App(props) {
     localStorage.setItem("NowUser", null);
   }
 
-  const updateUser = (_User) => {
-    setUser(_User);
-    _User = JSON.stringify(_User);
-    localStorage.setItem("NowUser", _User);
+  const updateUser = (_user) => {
+    setUser(_user);
+    _user = JSON.stringify(_user);
+    localStorage.setItem("NowUser", _user);
   }
 
   return (
     <>
-      <Header User={user} logOut={logOut} />
+      <Header user={user} logOut={logOut} />
       <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/Login" element={<LoginPage sendUser={login} />} />
-          <Route path="/Registration" element={<RegistrationPage sendUser={login} />} />
-          <Route path="/Profile" element={<Profile User={user} UpdateUser={updateUser} />} />
-          <Route path="/CreateProduct" element={<CreateProduct User={user} />} />
-          <Route path="/Product/:id" element={<ProductPage User={user} />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
-        </Routes>
+        <ThemeContext.Provider value={{theme, setTheme}}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/login" element={<LoginPage sendUser={login} />} />
+            <Route path="/registration" element={<RegistrationPage sendUser={login} />} />
+            <Route path="/profile" element={<Profile user={user} updateUser={updateUser} />} />
+            <Route path="/create_product" element={<CreateProduct user={user} />} />
+            <Route path="/product/:id" element={<ProductPage user={user} />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
+          </Routes>
+        </ThemeContext.Provider>
       </Suspense>
     </>
   );

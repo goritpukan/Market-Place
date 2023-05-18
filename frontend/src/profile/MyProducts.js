@@ -28,7 +28,7 @@ export default function MyProducts(props) {
     return (
       <ul id="MyProducts">
         {products.map((Product) => (
-          <li id="MyProduct" key={Product["_id"]} onClick={() => navigate("/Product/" + Product["_id"])}>
+          <li id="MyProduct" key={Product["_id"]} onClick={() => navigate("/product/" + Product["_id"])}>
             <h1>{Product.name}</h1>
             <h2 id="ProductProfilePrice">{Product.cost} {Product.currency}</h2>
             <img id="MyProductPhoto" alt="" src={PHTOTURL + JSON.parse(Product.photos)[0]}/>
