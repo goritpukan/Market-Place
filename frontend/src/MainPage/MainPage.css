@@ -40,23 +40,45 @@ input::placeholder {
   text-align: center;
 }
 
-#FilterDiv {
+#light {
+  background-color: var(--light-background);
+}
+#dark {
+  background-color: var(--dark-background);
+} 
+
+#dark .filter-div{
+  background-color: var(--dark-form-background);
+}
+
+#light .filter-div{
+  background-color: var(--light-form-background);
+}
+
+.filter-div {
   position: absolute;
   top: 0%;
   width: 100%;
   height: 15%;
-  background-color: rgb(29, 29, 29);
-  display: flex;
-  justify-content: center;
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
   align-items: center;
-  gap: 10px;
+  justify-items: center;
+
 }
 
-#FilterDiv input[type="number"] {
-  width: 5%;
-  font-size: 20px;
-  /* margin-left: 5px; */
+.filter-div button{
+  position: relative;
+  width: 50%;
 }
+.filter-div .selects{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 1fr;
+}
+
 
 button {
   width: 10%;
@@ -74,7 +96,7 @@ button:hover {
 }
 
 
-#MainPage {
+.main-page {
   position: absolute;
   top: 13%;
   min-height: 87%;
@@ -87,7 +109,7 @@ button:hover {
   align-items: center;
 }
 
-#Products {
+.products {
   position: absolute;
   top: 18%;
   width: 100%;
@@ -100,7 +122,7 @@ button:hover {
   margin: 0;
 }
 
-#Products li {
+.products li {
   position: relative;
   text-align: center;
   min-width: 70%;
@@ -114,7 +136,7 @@ button:hover {
   cursor: pointer;
 }
 
-#Products img {
+.products img {
   width: 200px;
   height: 200px;
   margin-top: 10px;
@@ -125,16 +147,16 @@ button:hover {
   left: 50%;
 } */
 
-#Products li:hover {
+.products li:hover {
   background-color: rgb(50, 50, 50);
 }
 
-#Products li:active {
+.products li:active {
   background-color: rgb(42, 42, 42);
 }
 
 
-#PageButtonsContainer {
+.page-buttons-container {
   position: relative;
   top: 100%;
   width: 100%;
@@ -145,19 +167,13 @@ button:hover {
   gap: 10px
 }
 
-#PageButtonsContainer button {
+.page-buttons-container button {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   margin: 0;
   margin-bottom: 10px;
   font-size: 30px;
-}
-
-#MyProductPhoto {
-  position: absolute;
-  width: 70%;
-  height: 60%;
 }
 
 .loader {

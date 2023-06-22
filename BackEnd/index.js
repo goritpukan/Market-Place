@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 
+require('dotenv').config();
+
 const app = express();
 
 app.use(express.json({extended: true}));
@@ -11,7 +13,7 @@ app.use("/api/auth", require("./routs/routs.auth.js"));
 app.use("/api/images", require("./routs/routs.images.js"));
 app.use("/api/products", require("./routs/routs.products.js"));
 
-const URI = "mongodb://localhost:27017/JsMedia";
+const URI = process.env.DB_URI;
 
 const PORT = 4001;
 

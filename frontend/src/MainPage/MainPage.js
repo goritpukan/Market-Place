@@ -1,10 +1,11 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef, useContext } from "react";
+import { ThemeContext } from "../App";
 import "./MainPage.css";
 
+import ProductList from "./ProductList";
+
 export default function MainPage(props) {
-  const navigate = useNavigate();
 
   const [filters, setFilters] = useState({});
   const [products, setProducts] = useState([]);
@@ -12,12 +13,11 @@ export default function MainPage(props) {
   const [page, setPage] = useState(0);
   const [productsLength, setProductsLength] = useState(0);
 
+  const { theme } = useContext(ThemeContext);
+
   const prevFiltersRef = useRef({});
   const filtersRef = useRef({});
 
-  const PHTOTURL = "http://localhost:4001/api/images/ProductImage/";
-  const AVATARURL = "http://localhost:4001/api/images/avatar/";
-  const MAXPRODUCTS = 10;
 
   const getProducts = () => {
     setIsLoaded(false);
@@ -116,106 +116,64 @@ export default function MainPage(props) {
     }
   }
 
-  const Pages = () => {
-    const buttonsCount = Math.ceil(productsLength / MAXPRODUCTS);
-    let buttonsArr = [];
 
-    for (let i = 0; i < buttonsCount; i++) {
-      if (i > 8) {
-        buttonsArr[i] = buttonsCount - 1;
-        break;
-      }
-      buttonsArr[i] = i;
-    }
-
-    return (
-      <div id="PageButtonsContainer">
-        {buttonsArr.map(el => (
-          <button key={el} onClick={() => setPage(el)}>{el + 1}</button>
-        ))}
-      </div>
-    );
-
-  }
-
-  const ProductList = () => {
-    if (isLoaded && products) {
-      return (
-        <>
-          <ul id="Products">
-            {products.map(Product => (
-              <li key={Product["_id"]} onClick={() => navigate("/product/" + Product["_id"])}>
-                <img id="MyProductPhoto" alt="" src={PHTOTURL + JSON.parse(Product.photos)[0]} />
-                <h1>{Product.name}</h1>
-                <h1>{Product.cost} {Product.currency}</h1>
-                <h1>{Product.city}</h1>
-                <h1>{Product.category}</h1>
-                <div className="OwnerInfo">
-                  <h1>{JSON.parse(Product.owner).email}</h1>
-                  <h1>{JSON.parse(Product.owner).nickname}</h1>
-                  <img alt="" src={AVATARURL + JSON.parse(Product.owner).avatar}></img>
-                </div>
-              </li>
-            ))}
-            <Pages />
-          </ul>
-        </>
-      )
-    }
-  }
 
   return (
-    <div id="MainPage">
+    <div className="main-page" id={theme}>
       <Loading />
-      <div id="FilterDiv">
-        <select id="CurrencyFilter"
-          onChange={() => updateFilters()}
-          ref={el => filtersRef.current.currency = el}>
-          <option value="">Валюта</option>
-          <option value="UAH">UAH</option>
-          <option value="$">$</option>
-          <option value="€">€</option>
-        </select>
-        <select id="Category"
-          onChange={() => updateFilters()}
-          ref={el => filtersRef.current.category = el}>
-          <option value="">Категорія</option>
-          <option value="Нерухомість">Нерухомість</option>
-          <option value="Авто">Авто</option>
-          <option value="Електроніка">Електроніка</option>
-          <option value="Спорт">Спорт</option>
-          <option value="Дім">Дім</option>
-          <option value="Хобі">Хобі</option>
-          <option value="Велосипеди">Велосипеди</option>
-          <option value="Інше">Інше</option>
-        </select>
-        <select id="City"
-          onChange={() => updateFilters()}
-          ref={el => filtersRef.current.city = el}>
-          <option value="">Місто</option>
-          <option value="Київ">Київ</option>
-          <option value="Одеса">Одеса</option>
-          <option value="Львів">Львів</option>
-          <option value="Харків">Харків</option>
-          <option value="Інше">Інше</option>
-        </select>
-        <input id="MinPrice"
-          placeholder="Min"
-          ref={el => filtersRef.current.minPrice = el}
-          onBlur={() => {
-            checkMinMax();
-            updateFilters();
-          }}
-          maxLength="10" type="number" />
-        <input id="MaxPrice"
-          placeholder="Max"
-          ref={el => filtersRef.current.maxPrice = el}
-          onBlur={() => {
-            checkMinMax();
-            updateFilters();
-          }}
-          maxLength="10" type="number" />
-        <div id="Search">
+      <div className="filter-div">
+        <div className="selects">
+          <select className="currency-filter"
+            onChange={() => updateFilters()}
+            ref={el => filtersRef.current.currency = el}>
+            <option value="">Валюта</option>
+            <option value="UAH">UAH</option>
+            <option value="$">$</option>
+            <option value="€">€</option>
+          </select>
+          <select className="category"
+            onChange={() => updateFilters()}
+            ref={el => filtersRef.current.category = el}>
+            <option value="">Категорія</option>
+            <option value="Нерухомість">Нерухомість</option>
+            <option value="Авто">Авто</option>
+            <option value="Електроніка">Електроніка</option>
+            <option value="Спорт">Спорт</option>
+            <option value="Дім">Дім</option>
+            <option value="Хобі">Хобі</option>
+            <option value="Велосипеди">Велосипеди</option>
+            <option value="Інше">Інше</option>
+          </select>
+          <select className="city"
+            onChange={() => updateFilters()}
+            ref={el => filtersRef.current.city = el}>
+            <option value="">Місто</option>
+            <option value="Київ">Київ</option>
+            <option value="Одеса">Одеса</option>
+            <option value="Львів">Львів</option>
+            <option value="Харків">Харків</option>
+            <option value="Інше">Інше</option>
+          </select>
+        </div>
+        <div>
+          <input className="min-price"
+            placeholder="Min"
+            ref={el => filtersRef.current.minPrice = el}
+            onBlur={() => {
+              checkMinMax();
+              updateFilters();
+            }}
+            maxLength="10" type="number" />
+          <input className="max-price"
+            placeholder="Max"
+            ref={el => filtersRef.current.maxPrice = el}
+            onBlur={() => {
+              checkMinMax();
+              updateFilters();
+            }}
+            maxLength="10" type="number" />
+        </div>
+        <div className="search">
           <input type="text"
             ref={el => filtersRef.current.name = el}
             onBlur={() => handleBlur()}
@@ -223,7 +181,11 @@ export default function MainPage(props) {
         </div>
         <button onClick={() => clearAll()}>Clear</button>
       </div>
-      <ProductList />
+      <ProductList
+        isLoaded={isLoaded}
+        products={products}
+        setPage={setPage}
+        productsLength={productsLength} />
     </div>
   )
 

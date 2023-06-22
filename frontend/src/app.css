@@ -1,6 +1,17 @@
 * {
   overflow: hidden;
 }
+:root {
+  --dark-background: rgb(23, 23, 23);
+  --dark-form-background: rgb(35, 35, 35);
+  --dark-input-border: rgb(255, 255, 255);
+  --dark-border: rgb(181, 181, 181);
+
+  --light-background: #fff ;
+  --light-form-bacground: #c0c0c0;
+  --light-input-border: rgb(0, 0, 0);
+  --light-border: rgb(210, 210, 210);
+}
 
 header {
   position: fixed;

@@ -1,10 +1,14 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { ThemeContext } from "./App";
 
 export default function Header(props) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
+
+  const {theme, setTheme} = useContext(ThemeContext);
 
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
 
@@ -45,7 +49,7 @@ export default function Header(props) {
     return (
       <header>
         <button className="MainButton" onClick={() => navigate("/")}>Main</button>
-        <button>{}</button>
+        <button onClick={() => theme === "dark" ? setTheme("light") : setTheme("dark")}>{}</button>
         <Avatar />
         <Dropdown />
       </header>

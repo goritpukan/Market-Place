@@ -19,7 +19,6 @@ export const ThemeContext = createContext(null);
 export default function App(props) {
   const [theme, setTheme] = useState("dark");
 
-
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -66,9 +65,9 @@ export default function App(props) {
 
   return (
     <>
-      <Header user={user} logOut={logOut} />
-      <Suspense fallback={<Loader />}>
-        <ThemeContext.Provider value={{theme, setTheme}}>
+      <ThemeContext.Provider value={{ theme, setTheme }}>
+        <Header user={user} logOut={logOut} />
+        <Suspense fallback={<Loader />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginPage sendUser={login} />} />
@@ -78,8 +77,8 @@ export default function App(props) {
             <Route path="/product/:id" element={<ProductPage user={user} />} />
             <Route path="*" element={<h1>Not Found</h1>} />
           </Routes>
-        </ThemeContext.Provider>
-      </Suspense>
+        </Suspense>
+      </ThemeContext.Provider>
     </>
   );
 }

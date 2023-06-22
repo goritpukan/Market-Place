@@ -1,15 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Alegreya+Sans&display=swap');
 
-:root {
-  --dark-background: rgb(23, 23, 23);
-  --dark-form-background: rgb(35, 35, 35);
-  --dark-input-border: rgb(255, 255, 255);
-
-  --light-background: #c0c0c0;
-  --light-form-bacground: #fff;
-  --light-input-border: rgb(0, 0, 0);
-}
-
 * {
   margin: 0;
   font-family: 'Alegreya Sans', sans-serif;
@@ -179,6 +169,7 @@ button:hover {
   width: 30%;
   height: 40%;
   justify-self: center;
+  align-self: start;
 }
 
 
@@ -199,7 +190,6 @@ button:hover {
   }
   .forms button, .change-form button {
     font-size: 1em;
-    align-self: end;
     margin: 0;
     width: 30%;
   }
