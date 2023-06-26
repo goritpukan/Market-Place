@@ -10,9 +10,25 @@ body {
   height: 100%;
 }
 
-select {
-  margin-left: 5px;
+button {
+  width: 10%;
+  height: 30%;
+  
+  border-radius: 5px;
+  margin-left: 5%;
+  transition: .3s;
+  border-width: 0px;
   color: white;
+  background-color: rgb(23, 66, 207);
+}
+
+button:hover {
+  background-color: rgb(16, 48, 152);
+}
+
+select {
+  color: white;
+  margin-left: 5px;
   background-color: rgb(23, 66, 207);
   border-width: 0;
 }
@@ -30,22 +46,31 @@ input::-webkit-inner-spin-button {
 input:focus {
   border-width: 0;
   border-bottom-width: 3px;
-  border-color: rgb(255, 255, 255);
   outline: none;
 }
 
 input::placeholder {
   font-size: 18px;
-  color: rgb(179, 177, 177);
   text-align: center;
 }
 
-#light {
+#light .main-page {
   background-color: var(--light-background);
 }
 
-#dark {
+#dark .main-page {
   background-color: var(--dark-background);
+}
+
+.main-page {
+  position: absolute;
+
+  top: 13%;
+  min-height: 87%;
+  width: 100%;
+
+  color: white;
+  overflow: auto;
 }
 
 #dark .filter-div {
@@ -53,7 +78,7 @@ input::placeholder {
 }
 
 #light .filter-div {
-  background-color: var(--light-form-background);
+  background-color: var(--light-form-bacground);
 }
 
 .filter-div {
@@ -63,8 +88,9 @@ input::placeholder {
   height: 15%;
 
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
+
   align-items: center;
   justify-items: center;
 
@@ -79,89 +105,123 @@ input::placeholder {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
+
+  height: 40%;
 }
 
 .filter-div .min-max {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: 1fr;
+
+  align-items: center;
+  justify-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.filter-div .search {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-items: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+#dark .filter-div input,
+#dark .filter-div input::placeholder {
+  background-color: var(--dark-form-background);
+  border-color: white;
+
+  caret-color: white;
+  color: white;
+}
+
+#light .filter-div input,
+#light .filter-div input::placeholder {
+  background-color: var(--light-form-background);
+  border-color: black;
+
+  caret-color: black;
+  color: black;
 }
 
 .filter-div input {
-  position: relative;
-  width: 90%;
-  height: 100%;
+  margin: 0;
+  border-width: 1px;
+  border-style: solid;
+  font-size: 20px;
 
-}
-
-
-button {
-  width: 10%;
+  width: 80%;
   height: 30%;
-  border-radius: 5px;
-  margin-left: 5%;
-  transition: .3s;
-  border-width: 0px;
-  color: white;
-  background-color: rgb(23, 66, 207);
-}
-
-button:hover {
-  background-color: rgb(16, 48, 152);
-}
-
-
-.main-page {
-  position: absolute;
-  top: 13%;
-  min-height: 87%;
-  width: 100%;
-  background-color: rgb(38, 38, 38);
-  color: white;
-  overflow: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .products {
   position: absolute;
   top: 18%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 20px;
+  justify-items: center;
+  align-items: center;
   padding: 0;
   margin: 0;
 }
 
+#dark .products li {
+  background-color: var(--dark-product-background);
+  color: white;
+}
+
+#dark .products li:hover {
+  background-color: var(--dark-product-background-hover);
+}
+
+#light .products li {
+  background-color: var(--light-product-background);
+  color: black;
+}
+
+#light .products li:hover {
+  background-color: var(--light-product-background-hover);
+}
+
+
 .products li {
   position: relative;
   text-align: center;
-  min-width: 70%;
-  min-height: 300px;
-  background-color: rgb(61, 61, 61);
+  width: 70%;
+  height: 300px;
   border-radius: 20px;
-  display: flex;
-  justify-content: flex-start;
-  gap: 10px;
-  align-items: center;
-  cursor: pointer;
+
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 200px 1fr 200px;
+
+  font-size: 25px;
 }
 
-.products img {
+.products li .owner-info{
+  align-self: end;
+}
+
+.products li img {
   width: 200px;
   height: 200px;
   margin-top: 10px;
   margin-left: 10px;
-}
+} 
 
-/* #Products h1{
-  position: relative;
-  left: 50%;
-} */
+.products li .owner-info img{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
 
 .products li:hover {
   background-color: rgb(50, 50, 50);

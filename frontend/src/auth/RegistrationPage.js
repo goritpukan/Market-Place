@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function RegistrationPage(props) {
 
   const [errorMessage, setErrorMessage] = useState("");
-  const {theme} = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const inputRef = useRef({});
@@ -83,50 +83,52 @@ export default function RegistrationPage(props) {
   }
 
   return (
-    <div className="auth-page" id={theme}>
-      <ErrorWindow
-        errorMessage={errorMessage}
-        closeWindow={closeWindow} />
+    <div id={theme}>
+      <div className="auth-page">
+        <ErrorWindow
+          errorMessage={errorMessage}
+          closeWindow={closeWindow} />
 
-      <div>
-        <div className="registration-form">
-          <div className="forms" >
-            <p>Nickname</p>
-            <input type="text"
-              ref={el => inputRef.current.nickname = el}
-              name="Nickname"
-              minLength="4"
-              maxLength="20" />
-          </div>
-          <div className="forms">
-            <p>Email</p>
-            <input type="email"
-              ref={el => inputRef.current.email = el}
-              name="Email"
-              minLength="5"
-              maxLength="30" />
-          </div>
-          <div className="forms">
-            <p>Password</p>
-            <input
-              ref={el => inputRef.current.password = el}
-              type="password"
-              name="Password"
-              minLength="5"
-              maxLength="30" />
-          </div>
-          <div className="forms">
-            <p>Confirm Password</p>
-            <input type="Password"
-              ref={el => inputRef.current.confirmPassword = el}
-              name="Confirm Password"
-              minLength="5"
-              maxLength="30" />
-          </div>
-          <button className="send-button" onClick={() => getData()}>Create Account</button>
-          <div className="change-form">
-            <p>Have already an account?</p>
-            <button onClick={() => navigate("/login")}>Log in</button>
+        <div>
+          <div className="registration-form">
+            <div className="forms" >
+              <p>Nickname</p>
+              <input type="text"
+                ref={el => inputRef.current.nickname = el}
+                name="Nickname"
+                minLength="4"
+                maxLength="20" />
+            </div>
+            <div className="forms">
+              <p>Email</p>
+              <input type="email"
+                ref={el => inputRef.current.email = el}
+                name="Email"
+                minLength="5"
+                maxLength="30" />
+            </div>
+            <div className="forms">
+              <p>Password</p>
+              <input
+                ref={el => inputRef.current.password = el}
+                type="password"
+                name="Password"
+                minLength="5"
+                maxLength="30" />
+            </div>
+            <div className="forms">
+              <p>Confirm Password</p>
+              <input type="Password"
+                ref={el => inputRef.current.confirmPassword = el}
+                name="Confirm Password"
+                minLength="5"
+                maxLength="30" />
+            </div>
+            <button className="send-button" onClick={() => getData()}>Create Account</button>
+            <div className="change-form">
+              <p>Have already an account?</p>
+              <button onClick={() => navigate("/login")}>Log in</button>
+            </div>
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ export default function App(props) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    if (localStorage.getItem("NowUser") !== "undefined" && localStorage.getItem("NowUser") !== null) {
+    if (localStorage.getItem("NowUser") !== "undefined" && localStorage.getItem("NowUser") !== "null") {
       const user = JSON.parse(localStorage.getItem("NowUser"));
 
       const data = {

@@ -7,11 +7,25 @@
   --dark-form-background: rgb(35, 35, 35);
   --dark-input-border: rgb(255, 255, 255);
   --dark-border: rgb(181, 181, 181);
+  --dark-header-background: rgb(51, 51, 51);
+
+  --dark-product-background: rgb(61, 61, 61);
+  --dark-product-background-hover: rgb(42, 42, 42);
 
   --light-background: #fff ;
   --light-form-bacground: #c0c0c0;
   --light-input-border: rgb(0, 0, 0);
   --light-border: rgb(210, 210, 210);
+  --light-header-background: rgb(240, 240, 240);
+
+  --light-product-background: rgb(194, 194, 194);
+  --light-product-background-hover: rgb(177, 177, 177);
+}
+#dark header{
+  background-color: var(--dark-header-background);
+}
+#light header{
+  background-color: var(--light-header-background);
 }
 
 header {
@@ -20,7 +34,6 @@ header {
   left: 0;
   width: 100%;
   height: 13%;
-  background-color: rgb(51, 51, 51);
   display: flex;
   justify-content: flex-start;
   align-items: center;

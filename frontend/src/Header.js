@@ -8,7 +8,7 @@ export default function Header(props) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
-  const {theme, setTheme} = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   const AVATARURL = "http://localhost:4001/api/images/avatar/";
 
@@ -47,12 +47,14 @@ export default function Header(props) {
   }
   if (window.location.pathname !== "/login" && window.location.pathname !== "/registration") {
     return (
-      <header>
-        <button className="MainButton" onClick={() => navigate("/")}>Main</button>
-        <button onClick={() => theme === "dark" ? setTheme("light") : setTheme("dark")}>{}</button>
-        <Avatar />
-        <Dropdown />
-      </header>
+      <div id={theme}>
+        <header>
+          <button className="MainButton" onClick={() => navigate("/")}>Main</button>
+          <button onClick={() => theme === "dark" ? setTheme("light") : setTheme("dark")}>{ }</button>
+          <Avatar />
+          <Dropdown />
+        </header>
+      </div>
     );
   }
 }

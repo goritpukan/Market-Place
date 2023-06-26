@@ -5,12 +5,12 @@
   font-family: 'Alegreya Sans', sans-serif;
 }
 
-#light {
+#light .auth-page {
   background-color: var(--light-background);
   color: black;
 }
 
-#dark {
+#dark .auth-page {
   background-color: var(--dark-background);
   color: white;
 }

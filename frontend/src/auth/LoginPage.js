@@ -68,33 +68,35 @@ export default function LoginPage(props) {
     setErrorMessage(null);
   }
   return (
-    <div className="auth-page" id={theme}>
-      <ErrorWindow
-        errorMessage={errorMessage}
-        closeWindow={closeWindow} />
-      <div>
-        <div className="login-form">
-          <div className="forms" >
-            <p>Email</p>
-            <input type="email"
-              ref={el => inputRef.current.email = el}
-              name="Email"
-              minLength="5"
-              maxLength="30" />
-          </div>
-          <div className="forms" >
-            <p>Password</p>
-            <input
-              ref={el => inputRef.current.password = el}
-              type="Password"
-              name="Password"
-              minLength="5"
-              maxLength="30" />
-          </div>
-          <button className="send-button" onClick={() => getData()}>Log in</button>
-          <div className="forms">
-            <p>Don't have an account? </p>
-            <button onClick={() => navigate("/registration")}>Create account</button>
+    <div id={theme}>
+      <div className="auth-page">
+        <ErrorWindow
+          errorMessage={errorMessage}
+          closeWindow={closeWindow} />
+        <div>
+          <div className="login-form">
+            <div className="forms" >
+              <p>Email</p>
+              <input type="email"
+                ref={el => inputRef.current.email = el}
+                name="Email"
+                minLength="5"
+                maxLength="30" />
+            </div>
+            <div className="forms" >
+              <p>Password</p>
+              <input
+                ref={el => inputRef.current.password = el}
+                type="Password"
+                name="Password"
+                minLength="5"
+                maxLength="30" />
+            </div>
+            <button className="send-button" onClick={() => getData()}>Log in</button>
+            <div className="forms">
+              <p>Don't have an account? </p>
+              <button onClick={() => navigate("/registration")}>Create account</button>
+            </div>
           </div>
         </div>
       </div>
