@@ -43,15 +43,16 @@ input::placeholder {
 #light {
   background-color: var(--light-background);
 }
+
 #dark {
   background-color: var(--dark-background);
-} 
+}
 
-#dark .filter-div{
+#dark .filter-div {
   background-color: var(--dark-form-background);
 }
 
-#light .filter-div{
+#light .filter-div {
   background-color: var(--light-form-background);
 }
 
@@ -69,14 +70,28 @@ input::placeholder {
 
 }
 
-.filter-div button{
+.filter-div button {
   position: relative;
   width: 50%;
 }
-.filter-div .selects{
+
+.filter-div .selects {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.filter-div .min-max {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.filter-div input {
+  position: relative;
+  width: 90%;
+  height: 100%;
+
 }
 
 
@@ -142,6 +157,7 @@ button:hover {
   margin-top: 10px;
   margin-left: 10px;
 }
+
 /* #Products h1{
   position: relative;
   left: 50%;

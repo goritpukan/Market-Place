@@ -155,7 +155,7 @@ export default function MainPage(props) {
             <option value="Інше">Інше</option>
           </select>
         </div>
-        <div>
+        <div className="min-max">
           <input className="min-price"
             placeholder="Min"
             ref={el => filtersRef.current.minPrice = el}
