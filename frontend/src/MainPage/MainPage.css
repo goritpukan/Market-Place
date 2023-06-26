@@ -118,7 +118,7 @@ button:hover {
   width: 100%;
   background-color: rgb(38, 38, 38);
   color: white;
-  overflow: scroll;
+  overflow: auto;
   display: flex;
   justify-content: center;
   align-items: center;
