@@ -7,10 +7,10 @@ import Loader from "./Loader/Loader";
 import Header from "./Header.js";
 import MainPage from "./MainPage/MainPage.js";
 
-const LoginPage = lazy(() => import("./Auth/LoginPage"));
-const RegistrationPage = lazy(() => import("./Auth/RegistrationPage"));
+const LoginPage = lazy(() => import("./auth/LoginPage"));
+const RegistrationPage = lazy(() => import("./auth/RegistrationPage"));
 const ProductPage = lazy(() => import("./Product/ProductPage.js"));
-const Profile = lazy(() => import("./Profile/Profile.js"));
+const Profile = lazy(() => import("./profile/Profile.js"));
 const CreateProduct = lazy(() => import("./Product/CreateProduct.js"));
 
 
